@@ -9,10 +9,4 @@ describe('테스트', () => {
 
     await screen.findByText(/HomePage/);
   });
-
-  test('About', async () => {
-    renderWithProviders(<App />, { route: '/about' });
-
-    await screen.findByText(/AboutPage/);
-  });
 });
