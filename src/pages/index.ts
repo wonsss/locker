@@ -1,6 +1,4 @@
-import { lazy } from 'react';
-
-export const HomePage = lazy(() => import('pages/HomePage'));
-export const NamePage = lazy(() => import('pages/NamePage'));
-export const LockerPage = lazy(() => import('pages/LockerPage'));
-export const ResultPage = lazy(() => import('pages/ResultPage'));
+export { default as HomePage } from './HomePage';
+export { default as NamePage } from './NamePage';
+export { default as LockerPage } from './LockerPage';
+export { default as ResultPage } from './ResultPage';
