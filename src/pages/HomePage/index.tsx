@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Border, Spacing, Title } from 'components';
-import FixedBottomButton from 'components/FixedBottomButton';
+import { Border, Spacing, Title, FixedBottomButton } from 'components';
 
 const HomePage = () => {
   const navigate = useNavigate();
