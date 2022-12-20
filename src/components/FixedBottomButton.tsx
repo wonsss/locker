@@ -4,9 +4,10 @@ import { PropsWithChildren } from 'react';
 import { css } from '@emotion/react';
 
 export default function FixedBottomButton({
-  onClick,
   children,
-}: PropsWithChildren<{ onClick: () => void }>) {
+  onClick,
+  disabled,
+}: PropsWithChildren<{ onClick: () => void; disabled: boolean }>) {
   return (
     <div
       css={css`
@@ -21,7 +22,7 @@ export default function FixedBottomButton({
           padding: 0 20px 18px;
         `}
       >
-        <Button onClick={onClick} size="large">
+        <Button disabled={disabled} onClick={onClick} size="large">
           {children}
         </Button>
       </div>

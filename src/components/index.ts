@@ -6,3 +6,6 @@ export { default as FixedBottomButton } from './FixedBottomButton';
 export { default as Radio } from './Radio';
 export { default as Textarea } from './Textarea';
 export { default as Chips } from './Chips';
+export { default as UnderLineInput } from './UnderLineInput';
+export { default as Banner } from './Banner';
+export { default as Text } from './Text';
