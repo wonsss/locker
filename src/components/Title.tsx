@@ -43,6 +43,7 @@ const Wrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 5px;
+  padding: 0 24px;
 `;
 
 const Text = styled.h3`
@@ -51,5 +52,5 @@ const Text = styled.h3`
   word-break: keep-all;
   white-space: pre-line;
   font-weight: bold;
-  color: ${colors.darkGrey};
+  color: ${colors.grey900};
 `;

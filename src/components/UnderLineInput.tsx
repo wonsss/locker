@@ -1,8 +1,26 @@
+import { InputHTMLAttributes } from 'react';
+
 import styled from '@emotion/styled';
 
 import { colors } from 'constants/colors';
 
-const UnderLineInput = styled.input`
+type Props = InputHTMLAttributes<HTMLInputElement>;
+
+export default function UnderLineInput(props: Props) {
+  return (
+    <InputWrapper>
+      <InputElement {...props} />
+    </InputWrapper>
+  );
+}
+
+const InputWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 0 24px;
+`;
+
+const InputElement = styled.input`
   color: ${colors.grey500};
   height: 30px;
   width: 100%;
@@ -22,5 +40,3 @@ const UnderLineInput = styled.input`
     color: ${colors.grey300};
   }
 `;
-
-export default UnderLineInput;

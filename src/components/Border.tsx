@@ -7,6 +7,8 @@ export default function Border({ size }: { size: number }) {
         flex: 'none',
         height: size,
         backgroundColor: colors.grey100,
+        marginTop: size,
+        marginBottom: size,
       }}
     />
   );

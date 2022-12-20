@@ -9,3 +9,5 @@ export { default as Chips } from './Chips';
 export { default as UnderLineInput } from './UnderLineInput';
 export { default as Banner } from './Banner';
 export { default as Text } from './Text';
+export { default as NumberInput } from './NumberInput';
+export { default as Lockers } from './Lockers';

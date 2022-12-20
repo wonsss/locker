@@ -1,5 +1,7 @@
+import { nameListState, titleState } from 'globalStates';
 import { ChangeEvent, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
 import {
   Title,
@@ -17,8 +19,8 @@ import { colors } from 'constants/colors';
 
 const NamePage = () => {
   const [loadNameOption, setLoadNameOption] = useState('새로 입력');
-  const [nameList, setNameList] = useState<string[]>([]);
-  const [title, setTitle] = useState('');
+  const [nameList, setNameList] = useRecoilState(nameListState);
+  const [title, setTitle] = useRecoilState(titleState);
   const textarea = useRef<HTMLTextAreaElement>(null);
   const navigate = useNavigate();
 
@@ -44,20 +46,21 @@ const NamePage = () => {
   };
 
   return (
-    <div style={{ padding: '0 24px' }}>
-      <Title>{`사물함을 배정할\n크루들의 이름을 입력해주세요`}</Title>
+    <>
+      <Title linkTo="/home">{`배정 대상`}</Title>
       <Radio value={loadNameOption} onChange={handleChangeRadio}>
         <Radio.Option value="새로 입력">새로 입력</Radio.Option>
         <Radio.Option value="불러오기">불러오기</Radio.Option>
       </Radio>
+      <Spacing size={20} />
       {loadNameOption === '새로 입력' ? (
-        <>
-          <Spacing size={24} />
+        <div>
           <UnderLineInput
             onChange={handleChangeTitleInput}
             value={title}
             placeholder="그룹명"
           />
+          <Spacing size={20} />
           <Textarea
             ref={textarea}
             onChange={handleChangeNameTextarea}
@@ -65,6 +68,7 @@ const NamePage = () => {
             rows={2}
             placeholder="이름을 띄어써서 입력해주세요"
           />
+          <Spacing size={20} />
           <Banner>
             <Text color={colors.grey300}>미리보기</Text>
             <Spacing size={10} />
@@ -74,7 +78,7 @@ const NamePage = () => {
             <Spacing size={10} />
             <Chips list={nameList} />
           </Banner>
-        </>
+        </div>
       ) : null}
       <FixedBottomButton
         onClick={handleClickNextButton}
@@ -82,7 +86,7 @@ const NamePage = () => {
       >
         다음
       </FixedBottomButton>
-    </div>
+    </>
   );
 };
 
