@@ -4,17 +4,24 @@ import styled from '@emotion/styled';
 import { colors } from 'constants/colors';
 
 export default function Lockers({
-  list,
+  memberNameList,
+  lockerNameList,
   column,
 }: {
-  list: string[];
+  memberNameList?: string[];
+  lockerNameList: string[];
   column: number;
 }) {
   return (
     <div>
       <LockerList column={column}>
-        {list.map((item, index) => {
-          return <Locker key={index}>{item}</Locker>;
+        {lockerNameList.map((lockerName, index) => {
+          return (
+            <Locker key={index}>
+              <div>{memberNameList?.length && memberNameList[index]}</div>
+              <LockerName>{lockerName}</LockerName>
+            </Locker>
+          );
         })}
       </LockerList>
     </div>
@@ -39,9 +46,16 @@ const Locker = styled.li`
   border-radius: 14px;
   height: 80px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 0 10px;
   list-style: none;
   font-size: 20px;
+`;
+
+const LockerName = styled.div`
+  font-size: 14px;
+  color: ${colors.grey300};
+  font-weight: normal;
 `;

@@ -12,7 +12,7 @@ export default function NumberInput(props: NumberInputProps) {
   return (
     <InputWrapper>
       <Label htmlFor={props.title}>{props.title}</Label>
-      <Input type="number" id={props.title} {...props} />
+      <Input type="number" id={props.title} {...props} max="26" min="1" />
     </InputWrapper>
   );
 }

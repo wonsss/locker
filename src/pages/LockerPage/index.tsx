@@ -12,7 +12,10 @@ import {
   Lockers,
   Border,
   Spacing,
+  Text,
 } from 'components';
+
+import { colors } from 'constants/colors';
 
 const LockerPage = () => {
   const [option, setOption] = useState('새로 입력');
@@ -23,6 +26,7 @@ const LockerPage = () => {
 
   const [column, setColumn] = useState(defaultColumn);
   const [row, setRow] = useState(defaultRow);
+  const [warning, setWarning] = useState('');
 
   const navigate = useNavigate();
 
@@ -35,16 +39,28 @@ const LockerPage = () => {
   };
 
   const handleChangeColumnInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setColumn(e.target.valueAsNumber);
+    const value = Math.floor(e.target.valueAsNumber);
+    if (value > 30 || value < 0) {
+      setWarning('30 이하의 양의 정수를 입력해주세요');
+      return;
+    }
+    setWarning('');
+    setColumn(value);
   };
 
   const handleChangeRowInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setRow(e.target.valueAsNumber);
+    const value = Math.floor(e.target.valueAsNumber);
+    if (value > 26 || value < 0) {
+      setWarning('26 이하의 양의 정수를 입력해주세요');
+      return;
+    }
+    setWarning('');
+    setRow(value);
   };
 
   let rowCount = 0;
   let columnCount = 0;
-  const emptyList = Array.from({ length: column * row }, () => {
+  const lockerNameList = Array.from({ length: column * row }, () => {
     if (columnCount >= column) {
       columnCount = 0;
       rowCount++;
@@ -76,8 +92,13 @@ const LockerPage = () => {
               value={row}
             />
           </div>
+          <div style={{ display: 'flex', margin: '12px 30px 0' }}>
+            <Text color={colors.red200} fontSize="15px">
+              {warning}
+            </Text>
+          </div>
           <Border size={20} />
-          <Lockers column={column} list={emptyList} />
+          <Lockers column={column} lockerNameList={lockerNameList} />
         </>
       ) : null}
       <FixedBottomButton onClick={handleClickNextButton} disabled={!column}>

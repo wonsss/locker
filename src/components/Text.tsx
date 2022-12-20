@@ -32,5 +32,4 @@ export default function Text({
 const Span = styled.span`
   color: ${colors.grey500};
   font-size: 17px;
-  font-weight: bold;
 `;
