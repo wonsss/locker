@@ -14,7 +14,7 @@ const SIZES = {
   large: { minWidth: '100%', height: '56px', fontSize: '16px' },
 };
 
-export const Button = styled.button<ButtonProps>`
+const Button = styled.button<ButtonProps>`
   ${({ size, isActive = true }) => css`
     height: ${SIZES[size].height};
     max-height: ${SIZES[size].height};
@@ -32,14 +32,14 @@ export const Button = styled.button<ButtonProps>`
 
     ${isActive
       ? css`
-          background-color: ${colors.darkGrey};
+          background-color: ${colors.grey900};
           color: ${colors.white};
           &:hover {
             filter: brightness(1.5);
           }
         `
       : css`
-          background-color: ${colors.lightGrey};
+          background-color: ${colors.grey300};
           color: ${colors.white};
           &:hover {
             filter: brightness(1.5);
@@ -49,7 +49,7 @@ export const Button = styled.button<ButtonProps>`
     font-size: ${SIZES[size].fontSize};
 
     &:disabled {
-      background-color: ${colors.darkGrey};
+      background-color: ${colors.grey300};
       cursor: default;
       &:hover {
         filter: brightness(1);
@@ -57,3 +57,5 @@ export const Button = styled.button<ButtonProps>`
     }
   `}
 `;
+
+export default Button;

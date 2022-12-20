@@ -101,7 +101,7 @@ const RadioWrapper = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 24px;
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.grey100};
 `;
 
 const MotionDiv = styled(motion.div)`
@@ -145,7 +145,7 @@ const RadioOptionLabel = styled.label`
   text-align: center;
   cursor: pointer;
   margin: 0;
-  color: ${colors.grey};
+  color: ${colors.grey500};
 `;
 
 const RadioOptionSpan = styled.span`

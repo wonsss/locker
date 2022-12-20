@@ -1,6 +1,7 @@
 export const colors = {
   white: '#ffffff',
-  lightGrey: '#f2f4f6',
-  grey: '#62626d',
-  darkGrey: '#191f28',
+  grey100: '#f2f4f6',
+  grey300: '#b0b8c1',
+  grey500: '#62626d',
+  grey900: '#191f28',
 };

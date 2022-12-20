@@ -43,7 +43,6 @@ const Wrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 5px;
-  padding: 0 24px;
 `;
 
 const Text = styled.h3`
