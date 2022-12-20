@@ -1,11 +1,35 @@
+import { Ref, forwardRef, TextareaHTMLAttributes } from 'react';
+
 import styled from '@emotion/styled';
 
 import { colors } from 'constants/colors';
 
-const Textarea = styled.textarea`
+const Textarea = forwardRef(
+  (
+    props: TextareaHTMLAttributes<HTMLTextAreaElement>,
+    forwardRef: Ref<HTMLTextAreaElement>,
+  ) => {
+    return (
+      <TextareaWrapper>
+        <TextareaElement ref={forwardRef} {...props} />
+      </TextareaWrapper>
+    );
+  },
+);
+
+Textarea.displayName = 'Textarea';
+
+export default Textarea;
+
+const TextareaWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 0 24px;
+`;
+
+const TextareaElement = styled.textarea`
   color: ${colors.grey500};
   width: 100%;
-  margin: 24px 0;
   box-sizing: border-box;
   padding: 10px;
   font-weight: 500;
@@ -24,5 +48,3 @@ const Textarea = styled.textarea`
     color: ${colors.grey300};
   }
 `;
-
-export default Textarea;

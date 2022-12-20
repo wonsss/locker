@@ -71,7 +71,7 @@ const RadioOption = forwardRef(
       onChange,
       ...rest
     }: Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>,
-    ref: Ref<HTMLInputElement>,
+    forwardRef: Ref<HTMLInputElement>,
   ) => {
     return (
       <RadioOptionWrapper>
@@ -82,7 +82,7 @@ const RadioOption = forwardRef(
           onChange={onChange}
           name={name}
           value={value}
-          ref={ref}
+          ref={forwardRef}
           {...rest}
         />
         <RadioOptionLabel htmlFor={String(value)}>
@@ -102,6 +102,7 @@ const RadioWrapper = styled.div`
   justify-content: center;
   border-radius: 24px;
   background-color: ${colors.grey100};
+  margin: 0 24px;
 `;
 
 const MotionDiv = styled(motion.div)`
