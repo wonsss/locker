@@ -24,7 +24,7 @@ export default function Lockers({
 const LockerList = styled.ul<{ column: number }>`
   ${({ column }) => css`
     display: grid;
-    grid-template-columns: repeat(${column}, 80px);
+    grid-template-columns: repeat(${column}, minmax(30px, 80px));
     gap: 10px;
     padding: 0;
     border: none;
@@ -38,7 +38,6 @@ const Locker = styled.li`
   font-weight: 800;
   border-radius: 14px;
   height: 80px;
-  width: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
