@@ -20,6 +20,7 @@ export default function NewLocker() {
           title="행"
           onChange={(e) => handleChangeMatrixInput(e, 'row')}
           value={locker.row}
+          autoFocus
         />
         <NumberInput
           title="열"

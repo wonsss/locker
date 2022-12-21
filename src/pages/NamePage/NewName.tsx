@@ -21,6 +21,7 @@ export default function NewName() {
         onChange={handleChangeTitleInput}
         value={name.title}
         placeholder="그룹명"
+        autoFocus
       />
       <Spacing size={20} />
       <Textarea
