@@ -1,8 +1,7 @@
 import { defaultLocker, Locker, lockerState } from 'globalStates/lockerState';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import Storage from 'storage';
+
+import { useLoadPreview } from 'hooks/useLoadPreview';
 
 import {
   Banner,
@@ -16,41 +15,19 @@ import {
 import { colors } from 'constants/colors';
 
 export default function OldLocker() {
-  const lockerListFromStorage = Storage.load('locker');
-  const [lockerList, setLockerList] = useState<Locker[] | undefined>(
-    lockerListFromStorage,
-  );
-  const [previewLocker, setPreviewLocker] = useState<Locker>(
-    lockerList?.length ? lockerList[0] : defaultLocker,
-  );
   const setLockerState = useSetRecoilState<Locker>(lockerState);
-
-  const handleClickItemButton = (locker: Locker) => {
-    setPreviewLocker(locker);
-  };
-
-  const handleDeleteButton = () => {
-    if (!lockerList) {
-      return;
-    }
-
-    const filteredLockerList = lockerList.filter(
-      ({ id }) => id !== previewLocker.id,
-    );
-    setLockerList(filteredLockerList);
-    setPreviewLocker(
-      filteredLockerList.length ? filteredLockerList[0] : defaultLocker,
-    );
-
-    localStorage.setItem('locker', JSON.stringify(filteredLockerList));
-  };
-
-  const navigate = useNavigate();
-
-  const handleClickNextButton = () => {
-    setLockerState(previewLocker);
-    navigate('/result');
-  };
+  const {
+    list: lockerList,
+    preview: previewLocker,
+    handleClickItemButton,
+    handleDeleteButton,
+    handleClickNextButton,
+  } = useLoadPreview({
+    key: 'locker',
+    defaultData: defaultLocker,
+    nextPath: '/result',
+    setRecoilState: setLockerState,
+  });
 
   return (
     <>
@@ -94,8 +71,8 @@ export default function OldLocker() {
           <Text>생성시각: {previewLocker.createdAt}</Text>
           <Spacing size={20} />
           <div style={{ display: 'flex' }}>
-            <NumberInput title="행" value={previewLocker.row} />
-            <NumberInput title="열" value={previewLocker.column} />
+            <NumberInput title="행" defaultValue={previewLocker.row} />
+            <NumberInput title="열" defaultValue={previewLocker.column} />
           </div>
         </Banner>
       )}
