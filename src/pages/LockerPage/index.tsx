@@ -43,28 +43,28 @@ const LockerPage = () => {
     setOption(e.target.value);
   };
 
-  const handleChangeColumnInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeMatrixInput = (
+    e: ChangeEvent<HTMLInputElement>,
+    matrix: 'row' | 'column',
+  ) => {
     const value = Number.isNaN(e.target.valueAsNumber)
       ? ''
       : Math.floor(e.target.valueAsNumber);
-    if (value > 30 || value < 0) {
-      setWarning('30 이하의 양의 정수를 입력해주세요');
-      return;
-    }
-    setWarning('');
-    setLocker((prev) => ({ ...prev, column: value }));
-  };
 
-  const handleChangeRowInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = Number.isNaN(e.target.valueAsNumber)
-      ? ''
-      : Math.floor(e.target.valueAsNumber);
     if (value > 26 || value < 0) {
       setWarning('26 이하의 양의 정수를 입력해주세요');
       return;
     }
     setWarning('');
-    setLocker((prev) => ({ ...prev, row: value }));
+
+    if (matrix === 'column') {
+      setLocker((prev) => ({ ...prev, column: value }));
+      return;
+    }
+    if (matrix === 'row') {
+      setLocker((prev) => ({ ...prev, row: value }));
+      return;
+    }
   };
 
   const lockerNameList = useMemo(() => {
@@ -104,12 +104,12 @@ const LockerPage = () => {
           >
             <NumberInput
               title="행"
-              onChange={handleChangeRowInput}
+              onChange={(e) => handleChangeMatrixInput(e, 'row')}
               value={locker.row}
             />
             <NumberInput
               title="열"
-              onChange={handleChangeColumnInput}
+              onChange={(e) => handleChangeMatrixInput(e, 'column')}
               value={locker.column}
             />
             <UnderLineInput
