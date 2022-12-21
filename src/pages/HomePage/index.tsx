@@ -13,7 +13,7 @@ const HomePage = () => {
       <Spacing size={30} />
       <Title>사물함 배정</Title>
       <Border size={20} />
-      <FixedBottomButton onClick={handleClickStartButton}>
+      <FixedBottomButton onClick={handleClickStartButton} disabled={false}>
         새로 배정하기
       </FixedBottomButton>
     </>
