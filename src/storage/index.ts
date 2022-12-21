@@ -4,8 +4,10 @@ const localStorageGetItem = (key: string) => {
 };
 
 const localStorageSetItem = (key: string, data: unknown) => {
-  const prevData = localStorageGetItem(key) ?? [data];
-  localStorage.setItem(key, JSON.stringify([...prevData, data]));
+  const newData = localStorageGetItem(key)
+    ? [...localStorageGetItem(key), data]
+    : [data];
+  localStorage.setItem(key, JSON.stringify(newData));
 };
 
 const Storage = {
