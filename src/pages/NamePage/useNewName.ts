@@ -9,7 +9,7 @@ const useNewName = () => {
 
   const handleChangeNameTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const nameList = e.target.value.split(' ');
-    setName((prev) => ({ title: prev.title, list: nameList }));
+    setName((prev) => ({ ...prev, list: nameList }));
     if (textarea.current) {
       textarea.current.style.height = 'auto';
       textarea.current.style.height = textarea.current.scrollHeight + 'px';
@@ -17,7 +17,7 @@ const useNewName = () => {
   };
 
   const handleChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setName((prev) => ({ title: e.target.value, list: prev.list }));
+    setName((prev) => ({ ...prev, title: e.target.value }));
   };
 
   return { name, textarea, handleChangeNameTextarea, handleChangeTitleInput };

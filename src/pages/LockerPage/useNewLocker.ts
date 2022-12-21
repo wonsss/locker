@@ -62,13 +62,10 @@ const useNewLocker = () => {
 
     if (matrix === 'column') {
       setLocker((prev) => ({ ...prev, column: value }));
-      console.log('칼럼', locker);
       return;
     }
     if (matrix === 'row') {
       setLocker((prev) => ({ ...prev, row: value }));
-      console.log('로우', locker);
-
       return;
     }
   };

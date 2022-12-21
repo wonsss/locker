@@ -5,7 +5,7 @@ const localStorageGetItem = (key: string) => {
 
 const localStorageSetItem = (key: string, data: unknown) => {
   const prevData = localStorageGetItem(key);
-  localStorage.setItem('name', JSON.stringify([...prevData, data]));
+  localStorage.setItem(key, JSON.stringify([...prevData, data]));
 };
 
 const Storage = {

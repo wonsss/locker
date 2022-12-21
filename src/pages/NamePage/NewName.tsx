@@ -1,4 +1,9 @@
 import useNewName from './useNewName';
+import { nameState } from 'globalStates/nameState';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import Storage from 'storage';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   Chips,
@@ -7,13 +12,25 @@ import {
   Spacing,
   Banner,
   Text,
+  FixedBottomButton,
 } from 'components';
 
 import { colors } from 'constants/colors';
 
 export default function NewName() {
+  const navigate = useNavigate();
+  const [targetName, setTargetName] = useRecoilState(nameState);
   const { name, textarea, handleChangeNameTextarea, handleChangeTitleInput } =
     useNewName();
+
+  const nameId = uuidv4();
+
+  const handleClickNextButton = () => {
+    setTargetName((prev) => ({ ...prev, id: nameId }));
+    Storage.save('name', targetName);
+
+    navigate('/locker');
+  };
 
   return (
     <>
@@ -41,6 +58,12 @@ export default function NewName() {
         <Spacing size={10} />
         <Chips list={name.list} />
       </Banner>
+      <FixedBottomButton
+        onClick={handleClickNextButton}
+        disabled={!(targetName.list.length && targetName.title)}
+      >
+        다음
+      </FixedBottomButton>
     </>
   );
 }

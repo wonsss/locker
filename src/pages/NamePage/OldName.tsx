@@ -1,19 +1,55 @@
 import { Name, nameState } from 'globalStates/nameState';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import Storage from 'storage';
+import { v4 as uuidv4 } from 'uuid';
 
-import { Banner, Button, Chips, Spacing, Text } from 'components';
+import {
+  Banner,
+  Button,
+  Chips,
+  FixedBottomButton,
+  Spacing,
+  Text,
+} from 'components';
 
 import { colors } from 'constants/colors';
 
+const defaultName = { id: '', title: '', list: [] };
+
 const OldName = () => {
-  const nameList = Storage.load('name') as Name[];
-  const [name, setName] = useRecoilState<Name>(nameState);
-  const [selectedNameIndex, setSelectedNameIndex] = useState(0);
-  const handleClickNameButton = (name: Name, index: number) => {
-    setName(name);
-    setSelectedNameIndex(index);
+  const nameListFromStorage = Storage.load('name');
+  const [nameList, setNameList] = useState<Name[] | undefined>(
+    nameListFromStorage,
+  );
+  const [previewName, setPreviewName] = useState<Name>(
+    nameList?.length ? nameList[0] : defaultName,
+  );
+  const [targetName, setTargetName] = useRecoilState<Name>(nameState);
+
+  const handleClickNameButton = (name: Name) => {
+    setPreviewName(name);
+  };
+
+  const handleDeleteButton = () => {
+    if (!nameList) {
+      return;
+    }
+
+    const filteredNameList = nameList.filter(({ id }) => id !== previewName.id);
+    localStorage.setItem('name', JSON.stringify(filteredNameList));
+    setNameList(Storage.load('name'));
+    setPreviewName(nameList.length ? nameList[0] : defaultName);
+  };
+
+  const navigate = useNavigate();
+
+  const handleClickNextButton = () => {
+    // setPreviewName((prev) => ({ ...prev, id: nameId }));
+    // Storage.save('name', previewName);
+    setTargetName(previewName);
+    navigate('/locker');
   };
 
   return (
@@ -26,12 +62,12 @@ const OldName = () => {
           margin: '0 24px',
         }}
       >
-        {nameList.map((name, index) => (
+        {nameList?.map((name) => (
           <Button
-            key={`${name.title}-${index}`}
-            onClick={() => handleClickNameButton(name, index)}
+            key={name.id}
+            onClick={() => handleClickNameButton(name)}
             size="medium"
-            isActive={selectedNameIndex === index}
+            isActive={previewName.id === name.id}
           >
             {name.title}
           </Button>
@@ -39,14 +75,24 @@ const OldName = () => {
       </div>
       <Spacing size={20} />
       <Banner>
+        <Button onClick={handleDeleteButton} size="small">
+          삭제
+        </Button>
+        <Spacing size={10} />
         <Text color={colors.grey300}>미리보기</Text>
         <Spacing size={10} />
         <Text>
-          그룹명: {name.title}({name.list.length}명)
+          그룹명: {previewName.title}({previewName.list.length}명)
         </Text>
         <Spacing size={10} />
-        <Chips list={name.list} />
+        <Chips list={previewName.list} />
       </Banner>
+      <FixedBottomButton
+        onClick={handleClickNextButton}
+        disabled={!(previewName.list.length && previewName.title)}
+      >
+        다음
+      </FixedBottomButton>
     </>
   );
 };

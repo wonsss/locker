@@ -2,24 +2,28 @@ import NewName from './NewName';
 import OldName from './OldName';
 import { nameState } from 'globalStates/nameState';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import Storage from 'storage';
+import { v4 as uuidv4 } from 'uuid';
 
 import { useRadioOption } from 'hooks/useRadioOption';
 
 import { Title, FixedBottomButton, Radio, Spacing } from 'components';
 
 const NamePage = () => {
-  const navigate = useNavigate();
-  const name = useRecoilValue(nameState);
+  // const navigate = useNavigate();
+  // const [targetName, setTargetName] = useRecoilState(nameState);
   const { option, handleChangeRadio } = useRadioOption('새로 입력');
 
-  const handleClickNextButton = () => {
-    if (option === '새로 입력') {
-      Storage.save('name', name);
-    }
-    navigate('/locker');
-  };
+  // const nameId = uuidv4();
+
+  // const handleClickNextButton = () => {
+  //   if (option === '새로 입력') {
+  //     setTargetName((prev) => ({ ...prev, id: nameId }));
+  //     Storage.save('name', targetName);
+  //   }
+  //   navigate('/locker');
+  // };
 
   return (
     <>
@@ -30,12 +34,12 @@ const NamePage = () => {
       </Radio>
       <Spacing size={20} />
       {option === '새로 입력' ? <NewName /> : <OldName />}
-      <FixedBottomButton
+      {/* <FixedBottomButton
         onClick={handleClickNextButton}
-        disabled={!(name.list.length && name.title)}
+        disabled={!(targetName.list.length && targetName.title)}
       >
         다음
-      </FixedBottomButton>
+      </FixedBottomButton> */}
     </>
   );
 };
