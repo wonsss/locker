@@ -16,7 +16,7 @@ export default function NewName() {
     useNewName();
 
   return (
-    <div>
+    <>
       <UnderLineInput
         onChange={handleChangeTitleInput}
         value={name.title}
@@ -41,6 +41,6 @@ export default function NewName() {
         <Spacing size={10} />
         <Chips list={name.list} />
       </Banner>
-    </div>
+    </>
   );
 }

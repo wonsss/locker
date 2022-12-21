@@ -1,7 +1,9 @@
 import NewName from './NewName';
+import OldName from './OldName';
 import { nameState } from 'globalStates/nameState';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import Storage from 'storage';
 
 import { useRadioOption } from 'hooks/useRadioOption';
 
@@ -13,6 +15,9 @@ const NamePage = () => {
   const { option, handleChangeRadio } = useRadioOption('새로 입력');
 
   const handleClickNextButton = () => {
+    if (option === '새로 입력') {
+      Storage.save('name', name);
+    }
     navigate('/locker');
   };
 
@@ -24,7 +29,7 @@ const NamePage = () => {
         <Radio.Option value="불러오기">불러오기</Radio.Option>
       </Radio>
       <Spacing size={20} />
-      {option === '새로 입력' ? <NewName /> : null}
+      {option === '새로 입력' ? <NewName /> : <OldName />}
       <FixedBottomButton
         onClick={handleClickNextButton}
         disabled={!(name.list.length && name.title)}
