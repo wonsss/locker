@@ -1,4 +1,4 @@
-import { Name, nameState } from 'globalStates/nameState';
+import { defaultName, Name, nameState } from 'globalStates/nameState';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
@@ -14,8 +14,6 @@ import {
 } from 'components';
 
 import { colors } from 'constants/colors';
-
-const defaultName = { id: '', title: '', list: [] };
 
 const OldName = () => {
   const nameListFromStorage = Storage.load('name');
@@ -37,9 +35,10 @@ const OldName = () => {
     }
 
     const filteredNameList = nameList.filter(({ id }) => id !== previewName.id);
+    setNameList(filteredNameList);
+    setPreviewName(filteredNameList.length ? filteredNameList[0] : defaultName);
+
     localStorage.setItem('name', JSON.stringify(filteredNameList));
-    setNameList(Storage.load('name'));
-    setPreviewName(nameList.length ? nameList[0] : defaultName);
   };
 
   const navigate = useNavigate();
@@ -86,7 +85,7 @@ const OldName = () => {
       </Banner>
       <FixedBottomButton
         onClick={handleClickNextButton}
-        disabled={!(previewName.list.length && previewName.title)}
+        disabled={!previewName.title}
       >
         다음
       </FixedBottomButton>
