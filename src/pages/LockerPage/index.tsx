@@ -1,6 +1,6 @@
 import { lockerState } from 'globalStates/lockerState';
 import { nameState } from 'globalStates/nameState';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { divisor } from 'utils/math';
@@ -14,6 +14,7 @@ import {
   Border,
   Spacing,
   Text,
+  UnderLineInput,
 } from 'components';
 
 import { colors } from 'constants/colors';
@@ -25,13 +26,14 @@ const LockerPage = () => {
   const [locker, setLocker] = useRecoilState(lockerState);
   const nameListLength = useRecoilValue(nameState).list.length;
 
-  const division = divisor(nameListLength);
-  const defaultColumn = division[Math.floor(division.length / 2)];
-  const defaultRow = nameListLength / defaultColumn;
-
   useEffect(() => {
+    const division = divisor(nameListLength);
+    const defaultColumn =
+      nameListLength === 0 ? 4 : division[Math.floor(division.length / 2)];
+    const defaultRow =
+      nameListLength === 0 ? 3 : nameListLength / defaultColumn;
     setLocker((prev) => ({ ...prev, column: defaultColumn, row: defaultRow }));
-  }, []);
+  }, [nameListLength]);
 
   const handleClickNextButton = () => {
     navigate('/locker');
@@ -42,7 +44,9 @@ const LockerPage = () => {
   };
 
   const handleChangeColumnInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = Math.floor(e.target.valueAsNumber);
+    const value = Number.isNaN(e.target.valueAsNumber)
+      ? ''
+      : Math.floor(e.target.valueAsNumber);
     if (value > 30 || value < 0) {
       setWarning('30 이하의 양의 정수를 입력해주세요');
       return;
@@ -52,7 +56,9 @@ const LockerPage = () => {
   };
 
   const handleChangeRowInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = Math.floor(e.target.valueAsNumber);
+    const value = Number.isNaN(e.target.valueAsNumber)
+      ? ''
+      : Math.floor(e.target.valueAsNumber);
     if (value > 26 || value < 0) {
       setWarning('26 이하의 양의 정수를 입력해주세요');
       return;
@@ -61,20 +67,27 @@ const LockerPage = () => {
     setLocker((prev) => ({ ...prev, row: value }));
   };
 
-  let rowCount = 0;
-  let columnCount = 0;
-  const lockerNameList = Array.from(
-    { length: locker.column * locker.row },
-    () => {
-      if (columnCount >= locker.column) {
-        columnCount = 0;
-        rowCount++;
-      }
-      columnCount++;
+  const lockerNameList = useMemo(() => {
+    let rowCount = 0;
+    let columnCount = 0;
 
-      return `${String.fromCharCode(65 + rowCount)}${columnCount}`;
-    },
-  );
+    return Array.from(
+      { length: Number(locker.column) * Number(locker.row) },
+      () => {
+        if (columnCount >= locker.column) {
+          columnCount = 0;
+          rowCount++;
+        }
+        columnCount++;
+
+        return `${String.fromCharCode(65 + rowCount)}${columnCount}`;
+      },
+    );
+  }, [locker.column, locker.row]);
+
+  const handleChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setLocker((prev) => ({ ...prev, title: e.target.value }));
+  };
 
   return (
     <>
@@ -86,16 +99,23 @@ const LockerPage = () => {
       <Spacing size={20} />
       {option === '새로 입력' ? (
         <>
-          <div style={{ display: 'flex', margin: '0 24px' }}>
+          <div
+            style={{ display: 'flex', alignItems: 'center', margin: '0 24px' }}
+          >
             <NumberInput
-              title="가로"
+              title="행"
+              onChange={handleChangeRowInput}
+              value={locker.row}
+            />
+            <NumberInput
+              title="열"
               onChange={handleChangeColumnInput}
               value={locker.column}
             />
-            <NumberInput
-              title="세로"
-              onChange={handleChangeRowInput}
-              value={locker.row}
+            <UnderLineInput
+              onChange={handleChangeTitleInput}
+              value={locker.title}
+              placeholder="사물함 이름"
             />
           </div>
           <div style={{ display: 'flex', margin: '12px 30px 0' }}>
@@ -104,12 +124,15 @@ const LockerPage = () => {
             </Text>
           </div>
           <Border size={20} />
-          <Lockers column={locker.column} lockerNameList={lockerNameList} />
+          <Lockers
+            column={Number(locker.column)}
+            lockerNameList={lockerNameList}
+          />
         </>
       ) : null}
       <FixedBottomButton
         onClick={handleClickNextButton}
-        disabled={!locker.column}
+        disabled={!(locker.column && locker.title)}
       >
         다음
       </FixedBottomButton>
