@@ -22,7 +22,7 @@ import { colors } from 'constants/colors';
 const LockerPage = () => {
   const navigate = useNavigate();
   const [option, setOption] = useState('새로 입력');
-  const [warning, setWarning] = useState('');
+  const [warning, setWarning] = useState('사물함의 이름을 입력해주세요');
   const [locker, setLocker] = useRecoilState(lockerState);
   const nameListLength = useRecoilValue(nameState).list.length;
 
@@ -55,7 +55,11 @@ const LockerPage = () => {
       setWarning('26 이하의 양의 정수를 입력해주세요');
       return;
     }
-    setWarning('');
+    if (value === '' || value === 0) {
+      setWarning('26 이하의 양의 정수를 입력해주세요');
+    } else {
+      setWarning('');
+    }
 
     if (matrix === 'column') {
       setLocker((prev) => ({ ...prev, column: value }));
@@ -86,6 +90,11 @@ const LockerPage = () => {
   }, [locker.column, locker.row]);
 
   const handleChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      setWarning('사물함의 이름을 입력해주세요');
+    } else {
+      setWarning('');
+    }
     setLocker((prev) => ({ ...prev, title: e.target.value }));
   };
 
