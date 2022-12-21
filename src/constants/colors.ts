@@ -4,5 +4,5 @@ export const colors = {
   grey300: '#b0b8c1',
   grey500: '#62626d',
   grey900: '#191f28',
-  red200: '#ef9a9a',
+  teal200: '#81c7cc',
 };

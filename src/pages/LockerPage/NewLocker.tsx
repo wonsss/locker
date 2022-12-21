@@ -6,7 +6,7 @@ import { colors } from 'constants/colors';
 
 export default function NewLocker() {
   const {
-    warning,
+    message,
     locker,
     lockerList,
     handleChangeMatrixInput,
@@ -33,8 +33,8 @@ export default function NewLocker() {
         />
       </div>
       <div style={{ display: 'flex', margin: '12px 30px 0' }}>
-        <Text color={colors.red200} fontSize="15px">
-          {warning}
+        <Text color={colors.teal200} fontSize="15px">
+          {message}
         </Text>
       </div>
       <Border size={20} />

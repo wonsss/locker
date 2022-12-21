@@ -13,7 +13,7 @@ const LockerPage = () => {
   const { option, handleChangeRadio } = useRadioOption('새로 입력');
 
   const handleClickNextButton = () => {
-    navigate('/locker');
+    navigate('/result');
   };
 
   return (
@@ -29,7 +29,7 @@ const LockerPage = () => {
         onClick={handleClickNextButton}
         disabled={!(locker.column && locker.title)}
       >
-        다음
+        랜덤으로 배정하기
       </FixedBottomButton>
     </>
   );

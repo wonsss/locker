@@ -5,18 +5,24 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { divisor } from 'utils/math';
 
 const useNewLocker = () => {
-  const [warning, setWarning] = useState('사물함의 이름을 입력해주세요');
+  const [message, setMessage] = useState('');
   const [locker, setLocker] = useRecoilState(lockerState);
-  const nameListLength = useRecoilValue(nameState).list.length;
+  const name = useRecoilValue(nameState);
 
   useEffect(() => {
-    const division = divisor(nameListLength);
+    if (!name.list.length) {
+      return;
+    }
+
+    const division = divisor(name.list.length);
     const defaultColumn =
-      nameListLength === 0 ? 4 : division[Math.floor(division.length / 2)];
+      name.list.length === 0 ? 4 : division[Math.floor(division.length / 2)];
     const defaultRow =
-      nameListLength === 0 ? 3 : nameListLength / defaultColumn;
-    setLocker((prev) => ({ ...prev, column: defaultColumn, row: defaultRow }));
-  }, [nameListLength]);
+      name.list.length === 0 ? 3 : name.list.length / defaultColumn;
+    setMessage(
+      `선택하신 ${name.title} 그룹은 ${name.list.length}명이므로 ${defaultRow}행 ${defaultColumn}열의 사물함을 추천합니다.`,
+    );
+  }, [name]);
 
   const lockerList = useMemo(() => {
     let rowCount = 0;
@@ -45,36 +51,39 @@ const useNewLocker = () => {
       : Math.floor(e.target.valueAsNumber);
 
     if (value > 26 || value < 0) {
-      setWarning('26 이하의 양의 정수를 입력해주세요');
+      setMessage('26 이하의 양의 정수를 입력해주세요');
       return;
     }
     if (value === '' || value === 0) {
-      setWarning('26 이하의 양의 정수를 입력해주세요');
+      setMessage('26 이하의 양의 정수를 입력해주세요');
     } else {
-      setWarning('');
+      setMessage('');
     }
 
     if (matrix === 'column') {
       setLocker((prev) => ({ ...prev, column: value }));
+      console.log('칼럼', locker);
       return;
     }
     if (matrix === 'row') {
       setLocker((prev) => ({ ...prev, row: value }));
+      console.log('로우', locker);
+
       return;
     }
   };
 
   const handleChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
-      setWarning('사물함의 이름을 입력해주세요');
+      setMessage('사물함의 이름을 입력해주세요');
     } else {
-      setWarning('');
+      setMessage('');
     }
     setLocker((prev) => ({ ...prev, title: e.target.value }));
   };
 
   return {
-    warning,
+    message,
     locker,
     lockerList,
     handleChangeMatrixInput,
