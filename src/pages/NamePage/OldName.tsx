@@ -70,19 +70,32 @@ const OldName = () => {
         ))}
       </div>
       <Spacing size={20} />
-      <Banner>
-        <Button onClick={handleDeleteButton} size="small">
-          삭제
-        </Button>
-        <Spacing size={10} />
-        <Text color={colors.grey300}>미리보기</Text>
-        <Spacing size={10} />
-        <Text>
-          그룹명: {previewName.title}({previewName.list.length}명)
-        </Text>
-        <Spacing size={10} />
-        <Chips list={previewName.list} />
-      </Banner>
+      {previewName.list.length === 0 ? null : (
+        <Banner>
+          <Spacing size={10} />
+          <div style={{ display: 'flex' }}>
+            <Text color={colors.grey900} fontSize="27px" fontWeight="bold">
+              {previewName.title}
+            </Text>
+            {previewName.list.length === 0 ? null : (
+              <Text color={colors.teal200} fontSize="27px" fontWeight="bold">
+                ({previewName.list.length})
+              </Text>
+            )}
+            <Button
+              style={{ marginLeft: '15px' }}
+              onClick={handleDeleteButton}
+              size="small"
+            >
+              삭제
+            </Button>
+          </div>
+          <Spacing size={10} />
+          <Text>생성시각: {previewName.createdAt}</Text>
+          <Spacing size={10} />
+          <Chips list={previewName.list} />
+        </Banner>
+      )}
       <FixedBottomButton
         onClick={handleClickNextButton}
         disabled={!previewName.title}

@@ -3,6 +3,7 @@ import { nameState } from 'globalStates/nameState';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import Storage from 'storage';
+import { getNowDate } from 'utils/date';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -25,7 +26,11 @@ export default function NewName() {
 
   const handleClickNextButton = () => {
     const nameId = uuidv4();
-    const newTargetName = { ...targetName, id: nameId };
+    const newTargetName = {
+      ...targetName,
+      id: nameId,
+      createdAt: getNowDate(),
+    };
     Storage.save('name', newTargetName);
 
     navigate('/locker');
@@ -51,9 +56,17 @@ export default function NewName() {
       <Banner>
         <Text color={colors.grey300}>미리보기</Text>
         <Spacing size={10} />
-        <Text>
-          그룹명: {name.title}({name.list.length}명)
-        </Text>
+        <div style={{ display: 'flex' }}>
+          <Text color={colors.grey900} fontSize="27px" fontWeight="bold">
+            {name.title}
+          </Text>
+          {name.list.length === 0 ? null : (
+            <Text color={colors.teal200} fontSize="27px" fontWeight="bold">
+              ({name.list.length})
+            </Text>
+          )}
+        </div>
+        <Spacing size={10} />
         <Spacing size={10} />
         <Chips list={name.list} />
       </Banner>
