@@ -1,7 +1,8 @@
+import { lockerState } from 'globalStates/lockerState';
 import { nameState } from 'globalStates/nameState';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { divisor } from 'utils/math';
 
 import {
@@ -18,17 +19,19 @@ import {
 import { colors } from 'constants/colors';
 
 const LockerPage = () => {
+  const navigate = useNavigate();
   const [option, setOption] = useState('새로 입력');
+  const [warning, setWarning] = useState('');
+  const [locker, setLocker] = useRecoilState(lockerState);
   const nameListLength = useRecoilValue(nameState).list.length;
+
   const division = divisor(nameListLength);
   const defaultColumn = division[Math.floor(division.length / 2)];
   const defaultRow = nameListLength / defaultColumn;
 
-  const [column, setColumn] = useState(defaultColumn);
-  const [row, setRow] = useState(defaultRow);
-  const [warning, setWarning] = useState('');
-
-  const navigate = useNavigate();
+  useEffect(() => {
+    setLocker((prev) => ({ ...prev, column: defaultColumn, row: defaultRow }));
+  }, []);
 
   const handleClickNextButton = () => {
     navigate('/locker');
@@ -45,7 +48,7 @@ const LockerPage = () => {
       return;
     }
     setWarning('');
-    setColumn(value);
+    setLocker((prev) => ({ ...prev, column: value }));
   };
 
   const handleChangeRowInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,20 +58,23 @@ const LockerPage = () => {
       return;
     }
     setWarning('');
-    setRow(value);
+    setLocker((prev) => ({ ...prev, row: value }));
   };
 
   let rowCount = 0;
   let columnCount = 0;
-  const lockerNameList = Array.from({ length: column * row }, () => {
-    if (columnCount >= column) {
-      columnCount = 0;
-      rowCount++;
-    }
-    columnCount++;
+  const lockerNameList = Array.from(
+    { length: locker.column * locker.row },
+    () => {
+      if (columnCount >= locker.column) {
+        columnCount = 0;
+        rowCount++;
+      }
+      columnCount++;
 
-    return `${String.fromCharCode(65 + rowCount)}${columnCount}`;
-  });
+      return `${String.fromCharCode(65 + rowCount)}${columnCount}`;
+    },
+  );
 
   return (
     <>
@@ -84,12 +90,12 @@ const LockerPage = () => {
             <NumberInput
               title="가로"
               onChange={handleChangeColumnInput}
-              value={column}
+              value={locker.column}
             />
             <NumberInput
               title="세로"
               onChange={handleChangeRowInput}
-              value={row}
+              value={locker.row}
             />
           </div>
           <div style={{ display: 'flex', margin: '12px 30px 0' }}>
@@ -98,10 +104,13 @@ const LockerPage = () => {
             </Text>
           </div>
           <Border size={20} />
-          <Lockers column={column} lockerNameList={lockerNameList} />
+          <Lockers column={locker.column} lockerNameList={lockerNameList} />
         </>
       ) : null}
-      <FixedBottomButton onClick={handleClickNextButton} disabled={!column}>
+      <FixedBottomButton
+        onClick={handleClickNextButton}
+        disabled={!locker.column}
+      >
         다음
       </FixedBottomButton>
     </>
