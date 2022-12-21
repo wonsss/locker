@@ -7,12 +7,6 @@ describe('테스트', () => {
   test('Home', async () => {
     renderWithProviders(<App />, { route: '/home' });
 
-    await screen.findByText(/HomePage/);
-  });
-
-  test('About', async () => {
-    renderWithProviders(<App />, { route: '/about' });
-
-    await screen.findByText(/AboutPage/);
+    await screen.findByText(/사물함 배정/);
   });
 });

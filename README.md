@@ -1,32 +1,42 @@
-# React Boilerplate
+# 사물함 배정
 
-## 소개
+## 기능 구현 목록
 
-React 프로젝트 빌드 시 사용하는 기초 환경설정입니다.
+- 홈(/home)
+  - [x] `새롭게 사물함 배정하기` 버튼을 클릭할 수 있다. 클릭 시, `/name` 경로로 이동한다.
+  - [ ] 기존에 배정된 사물함 배정 결과를 확인 및 삭제할 수 있다.
+  - [ ] 저장된 이름 목록을 확인 및 삭제할 수 있다.
+  - [ ] 저장된 사물함 목록을 확인 및 삭제할 수 있다.
+- 이름(/name)
+  - [x] 배정할 이름들의 목록을 띄어쓰기하여 입력하면, `공백`을 기준으로 구분하여 배열로 읽히며, 동시에 렌더링된다.
+  - [x] 목록의 제목을 입력 후, `다음` 버튼을 누르면 `/locker` 경로로 이동한다.
+  - [ ] 입력한 이름의 목록은 `로컬스토리지`에 자동으로 저장된다.
+  - [ ] 이름 목록 선택칸에 `로컬스토리지`에 저장된 데이터가 표시된다.
+  - [ ] 선택한 이름 목록을 `로컬스토리지`에서 삭제할 수 있다.
+- 사물함(/locker)
+  - [x] 사물함의 사이즈(세로 개수, 가로 개수)와 사물함명을 입력하면, 동시에 예상 사물함이 렌더링된다.
+  - [x] 사물함의 제목을 입력 후, `랜덤으로 배정하기` 버튼을 누르면 `/result` 경로로 이동한다.
+  - [ ] 입력한 사물함의 사이즈는 `로컬스토리지`에 자동으로 저장된다.
+  - [ ] 사물함 사이즈 선택칸에 `로컬스토리지`에 저장된 데이터가 표시된다.
+  - [ ] 선택한 사물함을 `로컬스토리지`에서 삭제할 수 있다.
+- 랜덤 배정(/result)
+  - [x] 사물함이 랜덤으로 배정되어 표시된다.
+  - [ ] 사물함 배정 결과(배정 제목, 이름 정보, 사물함 정보)는 함께 `로컬스토리지`에 저장된다.
+  - [ ] 선택한 사물함 배정 결과를 `로컬스토리지`에서 삭제할 수 있다.
+  - [x] 배정된 결과를 이미지로 다운받을 수 있다.
 
-## 사용 라이브러리
+- 상태관리
+  - [ ] 이름(1단계), 사물함(2단계), 랜덤 배정(3단계)를 지나는 동안 페이지 레이아웃 최상단에 현재 단계를 상태바로 표시한다.
+  - [ ] 페이지 간 상태 전달 및 취득은 useNavigate, useLocation 훅을 사용한다.
+  - [ ] `/locker` 나 `/result` 페이지로 직접 접근하여 필요한 상태가 없는 경우, `/home` 페이지로 redirection한다.
+- 디자인
+  - [ ] 반응형 디자인을 적용한다.
+  - [ ] color system은 화이트, 블랙 톤으로 깔끔하게 적용한다. 향후 수정이 용이하도록 테마 설정한다.
 
-- [React](https://ko.reactjs.org/)
-- [TypeScript](https://www.typescriptlang.org/)
-- 라우팅 : [React Router](https://reactrouter.com/en/main)
-- CSS 스타일링 : [emotions](https://emotion.sh/docs/introduction)
-- 코드 포매팅 : [Prettier](https://prettier.io/)
-- 린팅 : [ESlint](https://eslint.org/)
-- 전역상태 관리 : [Recoil](https://recoiljs.org/ko/)
-- API 연동 : [Axios](https://axios-http.com/), [React Query](https://react-query-v3.tanstack.com/)
-- 테스트 : [Jest](https://jestjs.io/), [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/), [MSW](https://mswjs.io/)
-- 패키지 매니저: [Yarn](https://yarnpkg.com/)
-- 빌드 환경설정 : [webpack], [babel-loader]
+* `로컬스토리지`는 필요시 `서버`로 대체될 수 있다. 서버로 대체될 경우, 인증 및 인가가 필요할 수 있다.
+## 실행
 
-- 기타 특징
-  - 절대경로
-  - import 순서 자동정렬
-  - github workflow(PR 테스트 후 코멘트)
-  - PR template
-  - development, production 모드에 따라 다른 빌드 환경설정
-
-## Scripts
-* node version : 14.17.0
+node version : 14.17.0
 
 - 설치
 

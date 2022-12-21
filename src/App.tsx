@@ -1,3 +1,4 @@
+import { PageLayout } from 'PageLayout';
 import Routes from 'Routes';
 import emotionNormalize from 'emotion-normalize';
 import { RecoilRoot } from 'recoil';
@@ -25,7 +26,9 @@ const App = () => {
       />
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
-          <Routes />
+          <PageLayout>
+            <Routes />
+          </PageLayout>
         </QueryClientProvider>
       </RecoilRoot>
     </div>
