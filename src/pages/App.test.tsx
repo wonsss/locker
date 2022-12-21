@@ -7,6 +7,6 @@ describe('테스트', () => {
   test('Home', async () => {
     renderWithProviders(<App />, { route: '/home' });
 
-    await screen.findByText(/HomePage/);
+    await screen.findByText(/사물함 배정/);
   });
 });
