@@ -1,9 +1,8 @@
 import { Name, nameState } from 'globalStates/nameState';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import Storage from 'storage';
-import { v4 as uuidv4 } from 'uuid';
 
 import {
   Banner,
@@ -26,7 +25,7 @@ const OldName = () => {
   const [previewName, setPreviewName] = useState<Name>(
     nameList?.length ? nameList[0] : defaultName,
   );
-  const [targetName, setTargetName] = useRecoilState<Name>(nameState);
+  const setTargetName = useSetRecoilState<Name>(nameState);
 
   const handleClickNameButton = (name: Name) => {
     setPreviewName(name);
@@ -46,8 +45,6 @@ const OldName = () => {
   const navigate = useNavigate();
 
   const handleClickNextButton = () => {
-    // setPreviewName((prev) => ({ ...prev, id: nameId }));
-    // Storage.save('name', previewName);
     setTargetName(previewName);
     navigate('/locker');
   };

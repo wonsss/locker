@@ -1,7 +1,7 @@
 import useNewName from './useNewName';
 import { nameState } from 'globalStates/nameState';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import Storage from 'storage';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -19,15 +19,14 @@ import { colors } from 'constants/colors';
 
 export default function NewName() {
   const navigate = useNavigate();
-  const [targetName, setTargetName] = useRecoilState(nameState);
+  const targetName = useRecoilValue(nameState);
   const { name, textarea, handleChangeNameTextarea, handleChangeTitleInput } =
     useNewName();
 
-  const nameId = uuidv4();
-
   const handleClickNextButton = () => {
-    setTargetName((prev) => ({ ...prev, id: nameId }));
-    Storage.save('name', targetName);
+    const nameId = uuidv4();
+    const newTargetName = { ...targetName, id: nameId };
+    Storage.save('name', newTargetName);
 
     navigate('/locker');
   };

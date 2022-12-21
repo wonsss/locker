@@ -4,7 +4,7 @@ const localStorageGetItem = (key: string) => {
 };
 
 const localStorageSetItem = (key: string, data: unknown) => {
-  const prevData = localStorageGetItem(key);
+  const prevData = localStorageGetItem(key) ?? [data];
   localStorage.setItem(key, JSON.stringify([...prevData, data]));
 };
 
