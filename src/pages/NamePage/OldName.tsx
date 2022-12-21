@@ -23,9 +23,9 @@ const OldName = () => {
   const [previewName, setPreviewName] = useState<Name>(
     nameList?.length ? nameList[0] : defaultName,
   );
-  const setTargetName = useSetRecoilState<Name>(nameState);
+  const setNameState = useSetRecoilState<Name>(nameState);
 
-  const handleClickNameButton = (name: Name) => {
+  const handleClickItemButton = (name: Name) => {
     setPreviewName(name);
   };
 
@@ -44,7 +44,7 @@ const OldName = () => {
   const navigate = useNavigate();
 
   const handleClickNextButton = () => {
-    setTargetName(previewName);
+    setNameState(previewName);
     navigate('/locker');
   };
 
@@ -61,7 +61,7 @@ const OldName = () => {
         {nameList?.map((name) => (
           <Button
             key={name.id}
-            onClick={() => handleClickNameButton(name)}
+            onClick={() => handleClickItemButton(name)}
             size="medium"
             isActive={previewName.id === name.id}
           >
@@ -70,7 +70,7 @@ const OldName = () => {
         ))}
       </div>
       <Spacing size={20} />
-      {previewName.list.length === 0 ? null : (
+      {!previewName.title ? null : (
         <Banner>
           <Spacing size={10} />
           <div style={{ display: 'flex' }}>

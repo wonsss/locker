@@ -1,6 +1,17 @@
 import useNewLocker from './useNewLocker';
+import { useNavigate } from 'react-router-dom';
+import Storage from 'storage';
+import { getNowDate } from 'utils/date';
+import { v4 as uuidv4 } from 'uuid';
 
-import { NumberInput, Lockers, Border, Text, UnderLineInput } from 'components';
+import {
+  NumberInput,
+  Lockers,
+  Border,
+  Text,
+  UnderLineInput,
+  FixedBottomButton,
+} from 'components';
 
 import { colors } from 'constants/colors';
 
@@ -12,6 +23,20 @@ export default function NewLocker() {
     handleChangeMatrixInput,
     handleChangeTitleInput,
   } = useNewLocker();
+
+  const navigate = useNavigate();
+
+  const handleClickNextButton = () => {
+    const lockerId = uuidv4();
+    const newLocker = {
+      ...locker,
+      id: lockerId,
+      createdAt: getNowDate(),
+    };
+    Storage.save('locker', newLocker);
+
+    navigate('/result');
+  };
 
   return (
     <>
@@ -40,6 +65,12 @@ export default function NewLocker() {
       </div>
       <Border size={20} />
       <Lockers column={Number(locker.column)} lockerList={lockerList} />
+      <FixedBottomButton
+        onClick={handleClickNextButton}
+        disabled={!(locker.column && locker.title)}
+      >
+        랜덤으로 배정하기
+      </FixedBottomButton>
     </>
   );
 }

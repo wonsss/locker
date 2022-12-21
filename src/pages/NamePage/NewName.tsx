@@ -1,7 +1,5 @@
 import useNewName from './useNewName';
-import { nameState } from 'globalStates/nameState';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import Storage from 'storage';
 import { getNowDate } from 'utils/date';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,18 +18,18 @@ import { colors } from 'constants/colors';
 
 export default function NewName() {
   const navigate = useNavigate();
-  const targetName = useRecoilValue(nameState);
+
   const { name, textarea, handleChangeNameTextarea, handleChangeTitleInput } =
     useNewName();
 
   const handleClickNextButton = () => {
     const nameId = uuidv4();
-    const newTargetName = {
-      ...targetName,
+    const newName = {
+      ...name,
       id: nameId,
       createdAt: getNowDate(),
     };
-    Storage.save('name', newTargetName);
+    Storage.save('name', newName);
 
     navigate('/locker');
   };
@@ -72,7 +70,7 @@ export default function NewName() {
       </Banner>
       <FixedBottomButton
         onClick={handleClickNextButton}
-        disabled={!(targetName.list.length && targetName.title)}
+        disabled={!(name.list.length && name.title)}
       >
         다음
       </FixedBottomButton>
