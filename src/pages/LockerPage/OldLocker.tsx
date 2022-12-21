@@ -71,8 +71,12 @@ export default function OldLocker() {
           <Text>생성시각: {previewLocker.createdAt}</Text>
           <Spacing size={20} />
           <div style={{ display: 'flex' }}>
-            <NumberInput title="행" defaultValue={previewLocker.row} />
-            <NumberInput title="열" defaultValue={previewLocker.column} />
+            <NumberInput title="행" defaultValue={previewLocker.row} readOnly />
+            <NumberInput
+              title="열"
+              defaultValue={previewLocker.column}
+              readOnly
+            />
           </div>
         </Banner>
       )}
