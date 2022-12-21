@@ -1,10 +1,12 @@
 import { atom } from 'recoil';
 
-export const lockerState = atom<{
+export type Locker = {
   title: string;
   column: number | '';
   row: number | '';
-}>({
+};
+
+export const lockerState = atom<Locker>({
   key: 'lockerType',
   default: {
     title: '',

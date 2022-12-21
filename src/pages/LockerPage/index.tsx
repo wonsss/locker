@@ -1,101 +1,19 @@
+import NewLocker from './NewLocker';
 import { lockerState } from 'globalStates/lockerState';
-import { nameState } from 'globalStates/nameState';
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { divisor } from 'utils/math';
+import { useRecoilValue } from 'recoil';
 
-import {
-  Title,
-  FixedBottomButton,
-  Radio,
-  NumberInput,
-  Lockers,
-  Border,
-  Spacing,
-  Text,
-  UnderLineInput,
-} from 'components';
+import { useRadioOption } from 'hooks/useRadioOption';
 
-import { colors } from 'constants/colors';
+import { Title, FixedBottomButton, Radio, Spacing } from 'components';
 
 const LockerPage = () => {
   const navigate = useNavigate();
-  const [option, setOption] = useState('새로 입력');
-  const [warning, setWarning] = useState('사물함의 이름을 입력해주세요');
-  const [locker, setLocker] = useRecoilState(lockerState);
-  const nameListLength = useRecoilValue(nameState).list.length;
-
-  useEffect(() => {
-    const division = divisor(nameListLength);
-    const defaultColumn =
-      nameListLength === 0 ? 4 : division[Math.floor(division.length / 2)];
-    const defaultRow =
-      nameListLength === 0 ? 3 : nameListLength / defaultColumn;
-    setLocker((prev) => ({ ...prev, column: defaultColumn, row: defaultRow }));
-  }, [nameListLength]);
+  const locker = useRecoilValue(lockerState);
+  const { option, handleChangeRadio } = useRadioOption('새로 입력');
 
   const handleClickNextButton = () => {
     navigate('/locker');
-  };
-
-  const handleChangeRadio = (e: ChangeEvent<HTMLInputElement>) => {
-    setOption(e.target.value);
-  };
-
-  const handleChangeMatrixInput = (
-    e: ChangeEvent<HTMLInputElement>,
-    matrix: 'row' | 'column',
-  ) => {
-    const value = Number.isNaN(e.target.valueAsNumber)
-      ? ''
-      : Math.floor(e.target.valueAsNumber);
-
-    if (value > 26 || value < 0) {
-      setWarning('26 이하의 양의 정수를 입력해주세요');
-      return;
-    }
-    if (value === '' || value === 0) {
-      setWarning('26 이하의 양의 정수를 입력해주세요');
-    } else {
-      setWarning('');
-    }
-
-    if (matrix === 'column') {
-      setLocker((prev) => ({ ...prev, column: value }));
-      return;
-    }
-    if (matrix === 'row') {
-      setLocker((prev) => ({ ...prev, row: value }));
-      return;
-    }
-  };
-
-  const lockerNameList = useMemo(() => {
-    let rowCount = 0;
-    let columnCount = 0;
-
-    return Array.from(
-      { length: Number(locker.column) * Number(locker.row) },
-      () => {
-        if (columnCount >= locker.column) {
-          columnCount = 0;
-          rowCount++;
-        }
-        columnCount++;
-
-        return `${String.fromCharCode(65 + rowCount)}${columnCount}`;
-      },
-    );
-  }, [locker.column, locker.row]);
-
-  const handleChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === '') {
-      setWarning('사물함의 이름을 입력해주세요');
-    } else {
-      setWarning('');
-    }
-    setLocker((prev) => ({ ...prev, title: e.target.value }));
   };
 
   return (
@@ -106,39 +24,7 @@ const LockerPage = () => {
         <Radio.Option value="불러오기">불러오기</Radio.Option>
       </Radio>
       <Spacing size={20} />
-      {option === '새로 입력' ? (
-        <>
-          <div
-            style={{ display: 'flex', alignItems: 'center', margin: '0 24px' }}
-          >
-            <NumberInput
-              title="행"
-              onChange={(e) => handleChangeMatrixInput(e, 'row')}
-              value={locker.row}
-            />
-            <NumberInput
-              title="열"
-              onChange={(e) => handleChangeMatrixInput(e, 'column')}
-              value={locker.column}
-            />
-            <UnderLineInput
-              onChange={handleChangeTitleInput}
-              value={locker.title}
-              placeholder="사물함 이름"
-            />
-          </div>
-          <div style={{ display: 'flex', margin: '12px 30px 0' }}>
-            <Text color={colors.red200} fontSize="15px">
-              {warning}
-            </Text>
-          </div>
-          <Border size={20} />
-          <Lockers
-            column={Number(locker.column)}
-            lockerNameList={lockerNameList}
-          />
-        </>
-      ) : null}
+      {option === '새로 입력' ? <NewLocker /> : null}
       <FixedBottomButton
         onClick={handleClickNextButton}
         disabled={!(locker.column && locker.title)}

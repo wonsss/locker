@@ -4,21 +4,21 @@ import styled from '@emotion/styled';
 import { colors } from 'constants/colors';
 
 export default function Lockers({
-  memberNameList,
-  lockerNameList,
+  nameList,
+  lockerList,
   column,
 }: {
-  memberNameList?: string[];
-  lockerNameList: string[];
+  nameList?: string[];
+  lockerList: string[];
   column: number;
 }) {
   return (
     <div>
       <LockerList column={column}>
-        {lockerNameList.map((lockerName, index) => {
+        {lockerList.map((lockerName, index) => {
           return (
             <Locker key={index}>
-              <div>{memberNameList?.length && memberNameList[index]}</div>
+              <div>{nameList?.length && nameList[index]}</div>
               <LockerName>{lockerName}</LockerName>
             </Locker>
           );
