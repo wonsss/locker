@@ -6,8 +6,8 @@ import { css } from '@emotion/react';
 export default function FixedBottomButton({
   children,
   onClick,
-  disabled,
-}: PropsWithChildren<{ onClick: () => void; disabled: boolean }>) {
+  disabled = false,
+}: PropsWithChildren<{ onClick: () => void; disabled?: boolean }>) {
   return (
     <div
       css={css`

@@ -13,18 +13,16 @@ export default function Lockers({
   column: number;
 }) {
   return (
-    <div>
-      <LockerList column={column}>
-        {lockerList.map((lockerName, index) => {
-          return (
-            <Locker key={index}>
-              <div>{nameList?.length && nameList[index]}</div>
-              <LockerName>{lockerName}</LockerName>
-            </Locker>
-          );
-        })}
-      </LockerList>
-    </div>
+    <LockerList column={column}>
+      {lockerList.map((lockerName, index) => {
+        return (
+          <Locker key={index} hasName={Boolean(nameList && nameList[index])}>
+            <MemberName>{nameList && nameList[index]}</MemberName>
+            <LockerName>{lockerName}</LockerName>
+          </Locker>
+        );
+      })}
+    </LockerList>
   );
 }
 
@@ -39,23 +37,29 @@ const LockerList = styled.ul<{ column: number }>`
   `}
 `;
 
-const Locker = styled.li`
-  background-color: ${colors.grey100};
-  color: ${colors.grey900};
-  font-weight: 800;
-  border-radius: 14px;
-  height: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0 10px;
-  list-style: none;
-  font-size: 20px;
+const Locker = styled.li<{ hasName: boolean }>`
+  ${({ hasName }) => css`
+    background-color: ${hasName ? colors.teal200 : colors.grey200};
+    color: ${colors.grey900};
+    font-weight: 800;
+    border-radius: 14px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    list-style: none;
+    font-size: 20px;
+  `}
+`;
+
+const MemberName = styled.div`
+  overflow: hidden;
 `;
 
 const LockerName = styled.div`
   font-size: 14px;
-  color: ${colors.grey300};
+  color: ${colors.grey500};
   font-weight: normal;
 `;

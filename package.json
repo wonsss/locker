@@ -24,6 +24,7 @@
     "axios": "^1.2.1",
     "emotion-normalize": "^11.0.1",
     "framer-motion": "^7.10.2",
+    "html2canvas": "^1.4.1",
     "lodash.shuffle": "^4.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
