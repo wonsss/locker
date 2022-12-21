@@ -3,7 +3,8 @@ import Storage from 'storage';
 
 export const useRadioOption = (key: string) => {
   const storage = Storage.load(key);
-  const initialOption = storage ? '불러오기' : '새로 입력';
+  const initialOption =
+    !storage || storage.length === 0 ? '새로 입력' : '불러오기';
 
   const [option, setOption] = useState(initialOption);
 
