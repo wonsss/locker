@@ -34,15 +34,12 @@ const Button = styled.button<ButtonProps>`
       ? css`
           background-color: ${colors.grey900};
           color: ${colors.white};
-          &:hover {
-            filter: brightness(1.5);
-          }
         `
       : css`
           background-color: ${colors.grey300};
           color: ${colors.white};
           &:hover {
-            filter: brightness(1.5);
+            background-color: ${colors.grey500};
           }
         `}
 
@@ -51,9 +48,6 @@ const Button = styled.button<ButtonProps>`
     &:disabled {
       background-color: ${colors.grey300};
       cursor: default;
-      &:hover {
-        filter: brightness(1);
-      }
     }
   `}
 `;

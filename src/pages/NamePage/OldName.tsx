@@ -1,4 +1,5 @@
 import { Name, nameState } from 'globalStates/nameState';
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import Storage from 'storage';
 
@@ -9,9 +10,10 @@ import { colors } from 'constants/colors';
 const OldName = () => {
   const nameList = Storage.load('name') as Name[];
   const [name, setName] = useRecoilState<Name>(nameState);
-
-  const handleClickNameButton = (name: Name) => {
+  const [selectedNameIndex, setSelectedNameIndex] = useState(0);
+  const handleClickNameButton = (name: Name, index: number) => {
     setName(name);
+    setSelectedNameIndex(index);
   };
 
   return (
@@ -27,8 +29,9 @@ const OldName = () => {
         {nameList.map((name, index) => (
           <Button
             key={`${name.title}-${index}`}
-            onClick={() => handleClickNameButton(name)}
+            onClick={() => handleClickNameButton(name, index)}
             size="medium"
+            isActive={selectedNameIndex === index}
           >
             {name.title}
           </Button>
