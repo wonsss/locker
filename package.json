@@ -1,8 +1,8 @@
 {
-  "name": "react-boilerplate",
+  "name": "사물함 배정",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/wonsss/react-boilerplate.git",
+  "repository": "https://github.com/wonsss/locker.git",
   "author": "wonsss <bigdatajang@gmail.com>",
   "license": "MIT",
   "scripts": {
