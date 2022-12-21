@@ -1,4 +1,4 @@
-import { nameListState } from 'globalStates';
+import { nameState } from 'globalStates/nameState';
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -19,7 +19,7 @@ import { colors } from 'constants/colors';
 
 const LockerPage = () => {
   const [option, setOption] = useState('새로 입력');
-  const nameListLength = useRecoilValue(nameListState).length;
+  const nameListLength = useRecoilValue(nameState).list.length;
   const division = divisor(nameListLength);
   const defaultColumn = division[Math.floor(division.length / 2)];
   const defaultRow = nameListLength / defaultColumn;

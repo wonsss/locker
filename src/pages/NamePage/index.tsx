@@ -1,4 +1,4 @@
-import { nameListState, titleState } from 'globalStates';
+import { nameState } from 'globalStates/nameState';
 import { ChangeEvent, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -19,8 +19,8 @@ import { colors } from 'constants/colors';
 
 const NamePage = () => {
   const [loadNameOption, setLoadNameOption] = useState('새로 입력');
-  const [nameList, setNameList] = useRecoilState(nameListState);
-  const [title, setTitle] = useRecoilState(titleState);
+  const [name, setName] = useRecoilState(nameState);
+
   const textarea = useRef<HTMLTextAreaElement>(null);
   const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ const NamePage = () => {
 
   const handleChangeNameTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const nameList = e.target.value.split(' ');
-    setNameList(nameList);
+    setName((prev) => ({ title: prev.title, list: nameList }));
     if (textarea.current) {
       textarea.current.style.height = 'auto';
       textarea.current.style.height = textarea.current.scrollHeight + 'px';
@@ -42,7 +42,7 @@ const NamePage = () => {
   };
 
   const handleChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    setName((prev) => ({ title: e.target.value, list: prev.list }));
   };
 
   return (
@@ -57,14 +57,14 @@ const NamePage = () => {
         <div>
           <UnderLineInput
             onChange={handleChangeTitleInput}
-            value={title}
+            value={name.title}
             placeholder="그룹명"
           />
           <Spacing size={20} />
           <Textarea
             ref={textarea}
             onChange={handleChangeNameTextarea}
-            value={nameList.join(' ')}
+            value={name.list.join(' ')}
             rows={2}
             placeholder="이름을 띄어써서 입력해주세요"
           />
@@ -73,16 +73,16 @@ const NamePage = () => {
             <Text color={colors.grey300}>미리보기</Text>
             <Spacing size={10} />
             <Text>
-              그룹명: {title}({nameList.length}명)
+              그룹명: {name.title}({name.list.length}명)
             </Text>
             <Spacing size={10} />
-            <Chips list={nameList} />
+            <Chips list={name.list} />
           </Banner>
         </div>
       ) : null}
       <FixedBottomButton
         onClick={handleClickNextButton}
-        disabled={!(nameList.length && title)}
+        disabled={!(name.list.length && name.title)}
       >
         다음
       </FixedBottomButton>
