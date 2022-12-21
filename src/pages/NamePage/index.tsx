@@ -6,7 +6,7 @@ import { useRadioOption } from 'hooks/useRadioOption';
 import { Title, Radio, Spacing } from 'components';
 
 const NamePage = () => {
-  const { option, handleChangeRadio } = useRadioOption('새로 입력');
+  const { option, handleChangeRadio } = useRadioOption('name');
 
   return (
     <>

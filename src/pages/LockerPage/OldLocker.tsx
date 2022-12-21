@@ -80,7 +80,7 @@ export default function OldLocker() {
         onClick={handleClickNextButton}
         disabled={!previewLocker.title}
       >
-        다음
+        랜덤으로 배정하기
       </FixedBottomButton>
     </>
   );
