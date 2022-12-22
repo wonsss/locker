@@ -1,5 +1,7 @@
-import useNewName from './useNewName';
+import { nameState } from 'globalStates/nameState';
+import { ChangeEvent, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import Storage from 'storage';
 import { getNowDate } from 'utils/date';
 import { v4 as uuidv4 } from 'uuid';
@@ -19,13 +21,26 @@ import { colors } from 'constants/colors';
 export default function NewName() {
   const navigate = useNavigate();
 
-  const { name, textarea, handleChangeNameTextarea, handleChangeTitleInput } =
-    useNewName();
+  const [currentName, setCurrentName] = useRecoilState(nameState);
+  const textarea = useRef<HTMLTextAreaElement>(null);
+
+  const handleChangeNameTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const nameList = e.target.value.split(' ');
+    setCurrentName((prev) => ({ ...prev, list: nameList }));
+    if (textarea.current) {
+      textarea.current.style.height = 'auto';
+      textarea.current.style.height = textarea.current.scrollHeight + 'px';
+    }
+  };
+
+  const handleChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setCurrentName((prev) => ({ ...prev, title: e.target.value }));
+  };
 
   const handleClickNextButton = () => {
     const nameId = uuidv4();
     const newName = {
-      ...name,
+      ...currentName,
       id: nameId,
       createdAt: getNowDate(),
     };
@@ -38,7 +53,7 @@ export default function NewName() {
     <>
       <UnderLineInput
         onChange={handleChangeTitleInput}
-        value={name.title}
+        value={currentName.title}
         placeholder="그룹명"
         autoFocus
       />
@@ -46,7 +61,7 @@ export default function NewName() {
       <Textarea
         ref={textarea}
         onChange={handleChangeNameTextarea}
-        value={name.list.join(' ')}
+        value={currentName.list.join(' ')}
         rows={2}
         placeholder="이름을 띄어써서 입력해주세요"
       />
@@ -56,21 +71,21 @@ export default function NewName() {
         <Spacing size={10} />
         <div style={{ display: 'flex' }}>
           <Text color={colors.grey900} fontSize="27px" fontWeight="bold">
-            {name.title}
+            {currentName.title}
           </Text>
-          {name.list.length === 0 ? null : (
+          {currentName.list.length === 0 ? null : (
             <Text color={colors.teal200} fontSize="27px" fontWeight="bold">
-              ({name.list.length})
+              ({currentName.list.length})
             </Text>
           )}
         </div>
         <Spacing size={10} />
         <Spacing size={10} />
-        <Chips list={name.list} />
+        <Chips list={currentName.list} />
       </Banner>
       <FixedBottomButton
         onClick={handleClickNextButton}
-        disabled={!(name.list.length && name.title)}
+        disabled={!(currentName.list.length && currentName.title)}
       >
         다음
       </FixedBottomButton>
