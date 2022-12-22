@@ -88,7 +88,7 @@ const OldName = () => {
               style={{ marginLeft: '15px' }}
               onClick={handleDeleteButton}
               size="small"
-              color={colors.grey500}
+              color={colors.teal200}
             >
               삭제
             </Button>

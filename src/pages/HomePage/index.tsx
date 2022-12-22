@@ -88,7 +88,7 @@ const HomePage = () => {
               <Button
                 onClick={() => handleClickDeleteButton(result.id)}
                 size="small"
-                color={colors.grey500}
+                color={colors.teal200}
               >
                 삭제
               </Button>

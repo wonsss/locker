@@ -14,5 +14,4 @@ export const colors = {
   teal400: '#269da6',
   teal500: '#008c96',
   teal600: '#00818a',
-  red: '#214c6e',
 };
