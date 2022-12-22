@@ -1,7 +1,7 @@
 import { defaultName, Name, nameState } from 'globalStates/nameState';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import Storage from 'storage';
 
 import {
@@ -18,23 +18,19 @@ import { colors } from 'constants/colors';
 const OldName = () => {
   const navigate = useNavigate();
 
-  const setNameState = useSetRecoilState<Name>(nameState);
+  const [currentName, setCurrentName] = useRecoilState<Name>(nameState);
 
   const nameListFromStorage = Storage.load('name');
   const [nameList, setNameList] = useState<Name[] | undefined>(
     nameListFromStorage,
   );
 
-  const [previewName, setPreviewName] = useState(
-    nameList?.length ? nameList[0] : defaultName,
-  );
-
   useEffect(() => {
-    setNameState(previewName);
+    setCurrentName(currentName);
   }, []);
 
   const handleClickItemButton = (name: Name) => {
-    setPreviewName(name);
+    setCurrentName(name);
   };
 
   const handleDeleteButton = () => {
@@ -42,9 +38,9 @@ const OldName = () => {
       return;
     }
 
-    const filteredList = nameList.filter(({ id }) => id !== previewName.id);
+    const filteredList = nameList.filter(({ id }) => id !== currentName.id);
     setNameList(filteredList);
-    setPreviewName(filteredList.length ? filteredList[0] : defaultName);
+    setCurrentName(filteredList.length ? filteredList[0] : defaultName);
 
     localStorage.setItem('name', JSON.stringify(filteredList));
   };
@@ -68,23 +64,23 @@ const OldName = () => {
             key={name.id}
             onClick={() => handleClickItemButton(name)}
             size="medium"
-            isActive={previewName.id === name.id}
+            isActive={currentName.id === name.id}
           >
             {name.title}
           </Button>
         ))}
       </div>
       <Spacing size={20} />
-      {!previewName.title ? null : (
+      {!currentName.title ? null : (
         <Banner>
           <Spacing size={10} />
           <div style={{ display: 'flex' }}>
             <Text color={colors.grey900} fontSize="27px" fontWeight="bold">
-              {previewName.title}
+              {currentName.title}
             </Text>
-            {previewName.list.length === 0 ? null : (
+            {currentName.list.length === 0 ? null : (
               <Text color={colors.teal200} fontSize="27px" fontWeight="bold">
-                ({previewName.list.length})
+                ({currentName.list.length})
               </Text>
             )}
             <Button
@@ -96,14 +92,14 @@ const OldName = () => {
             </Button>
           </div>
           <Spacing size={10} />
-          <Text>생성시각: {previewName.createdAt}</Text>
+          <Text>생성시각: {currentName.createdAt}</Text>
           <Spacing size={10} />
-          <Chips list={previewName.list} />
+          <Chips list={currentName.list} />
         </Banner>
       )}
       <FixedBottomButton
         onClick={handleClickNextButton}
-        disabled={!previewName.title}
+        disabled={!currentName.title}
       >
         다음
       </FixedBottomButton>
