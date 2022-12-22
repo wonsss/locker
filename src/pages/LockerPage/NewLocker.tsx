@@ -2,6 +2,7 @@ import useNewLocker from './useNewLocker';
 import { useNavigate } from 'react-router-dom';
 import Storage from 'storage';
 import { getNowDate } from 'utils/date';
+import { getLockerNameList } from 'utils/locker';
 import { v4 as uuidv4 } from 'uuid';
 
 import useSetResult from 'pages/ResultPage/useSetResult';
@@ -20,13 +21,10 @@ import { colors } from 'constants/colors';
 export default function NewLocker() {
   const navigate = useNavigate();
 
-  const {
-    message,
-    locker,
-    lockerNameList,
-    handleChangeMatrixInput,
-    handleChangeTitleInput,
-  } = useNewLocker();
+  const { message, locker, handleChangeMatrixInput, handleChangeTitleInput } =
+    useNewLocker();
+
+  const lockerNameList = getLockerNameList(locker);
 
   const { setResult, resultId } = useSetResult();
 

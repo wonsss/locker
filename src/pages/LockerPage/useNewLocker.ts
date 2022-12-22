@@ -1,6 +1,6 @@
 import { lockerState } from 'globalStates/lockerState';
 import { nameState } from 'globalStates/nameState';
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { divisor } from 'utils/math';
 
@@ -23,24 +23,6 @@ const useNewLocker = () => {
       `선택하신 ${name.title} 그룹은 ${name.list.length}명이므로 ${defaultRow}행 ${defaultColumn}열의 사물함을 추천합니다.`,
     );
   }, [name]);
-
-  const lockerNameList = useMemo(() => {
-    let rowCount = 0;
-    let columnCount = 0;
-
-    return Array.from(
-      { length: Number(locker.column) * Number(locker.row) },
-      () => {
-        if (columnCount >= locker.column) {
-          columnCount = 0;
-          rowCount++;
-        }
-        columnCount++;
-
-        return `${String.fromCharCode(65 + rowCount)}${columnCount}`;
-      },
-    );
-  }, [locker.column, locker.row]);
 
   const handleChangeMatrixInput = (
     e: ChangeEvent<HTMLInputElement>,
@@ -82,7 +64,6 @@ const useNewLocker = () => {
   return {
     message,
     locker,
-    lockerNameList,
     handleChangeMatrixInput,
     handleChangeTitleInput,
   };

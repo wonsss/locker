@@ -4,15 +4,14 @@ import shuffle from 'lodash.shuffle';
 import { useRecoilValue } from 'recoil';
 import Storage from 'storage';
 import { getNowDate } from 'utils/date';
+import { getLockerNameList } from 'utils/locker';
 import { v4 as uuidv4 } from 'uuid';
-
-import useNewLocker from 'pages/LockerPage/useNewLocker';
 
 const useSetResult = () => {
   const locker = useRecoilValue(lockerState);
   const name = useRecoilValue(nameState);
 
-  const { lockerNameList } = useNewLocker();
+  const lockerNameList = getLockerNameList(locker);
 
   const filledNameList = name.list.concat(
     Array.from(
