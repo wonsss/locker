@@ -14,7 +14,7 @@ const Routes = () => {
       <Route index element={<HomePage />} />
       <Route path="/name" element={<NamePage />} />
       <Route path="/locker" element={<LockerPage />} />
-      <Route path="/result" element={<ResultPage />} />
+      <Route path="/result/:resultId" element={<ResultPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </ReactRouterRoutes>
   );

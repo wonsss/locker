@@ -24,15 +24,13 @@ export default function Title({
 
   return (
     <Wrapper>
-      {linkTo ? (
-        <MdArrowBackIosNew
-          role="button"
-          size={24}
-          onClick={backToPreviousPage}
-          aria-label="뒤로가기"
-          style={{ cursor: 'pointer' }}
-        />
-      ) : null}
+      <MdArrowBackIosNew
+        role="button"
+        size={24}
+        onClick={backToPreviousPage}
+        aria-label="뒤로가기"
+        style={{ cursor: 'pointer' }}
+      />
       <Text>{children}</Text>
     </Wrapper>
   );

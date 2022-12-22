@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SetterOrUpdater } from 'recoil';
 import Storage from 'storage';
+
+import useSetResult from 'pages/ResultPage/useSetResult';
 
 export const useLoadPreview = ({
   key,
@@ -17,6 +19,10 @@ export const useLoadPreview = ({
   const listFromStorage = Storage.load(key);
   const [list, setList] = useState<any[] | undefined>(listFromStorage);
   const [preview, setPreview] = useState(list?.length ? list[0] : defaultData);
+
+  useEffect(() => {
+    setRecoilState(preview);
+  }, []);
 
   const handleClickItemButton = (data: any) => {
     setPreview(data);
@@ -35,10 +41,15 @@ export const useLoadPreview = ({
   };
 
   const navigate = useNavigate();
+  const { setResult, resultId } = useSetResult();
 
   const handleClickNextButton = () => {
-    setRecoilState(preview);
-    navigate(nextPath);
+    if (nextPath === '/result') {
+      setResult();
+      navigate(`${nextPath}/${resultId}`);
+    } else {
+      navigate(nextPath);
+    }
   };
 
   return {

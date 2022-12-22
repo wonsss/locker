@@ -16,13 +16,12 @@ const SIZES = {
 
 const Button = styled.button<ButtonProps>`
   ${({ size, isActive = true }) => css`
-    height: ${SIZES[size].height};
-    max-height: ${SIZES[size].height};
+    min-height: ${SIZES[size].height};
     min-width: ${SIZES[size].minWidth};
     width: fit-content;
     vertical-align: middle;
     text-align: center;
-    padding: 0 1rem;
+    padding: 8px 12px;
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -32,14 +31,17 @@ const Button = styled.button<ButtonProps>`
 
     ${isActive
       ? css`
-          background-color: ${colors.grey900};
-          color: ${colors.white};
-        `
-      : css`
-          background-color: ${colors.grey300};
+          background-color: ${colors.teal300};
           color: ${colors.white};
           &:hover {
-            background-color: ${colors.grey500};
+            background-color: ${colors.teal400};
+          }
+        `
+      : css`
+          background-color: ${colors.grey400};
+          color: ${colors.white};
+          &:hover {
+            background-color: ${colors.teal300};
           }
         `}
 

@@ -9,12 +9,12 @@ export default function Lockers({
   column,
 }: {
   nameList?: string[];
-  lockerList: string[];
+  lockerList?: string[];
   column: number;
 }) {
   return (
     <LockerList column={column}>
-      {lockerList.map((lockerName, index) => {
+      {lockerList?.map((lockerName, index) => {
         return (
           <Locker key={index} hasName={Boolean(nameList && nameList[index])}>
             <MemberName>{nameList && nameList[index]}</MemberName>

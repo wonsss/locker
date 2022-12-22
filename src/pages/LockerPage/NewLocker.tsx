@@ -4,6 +4,8 @@ import Storage from 'storage';
 import { getNowDate } from 'utils/date';
 import { v4 as uuidv4 } from 'uuid';
 
+import useSetResult from 'pages/ResultPage/useSetResult';
+
 import {
   NumberInput,
   Lockers,
@@ -23,7 +25,7 @@ export default function NewLocker() {
     handleChangeMatrixInput,
     handleChangeTitleInput,
   } = useNewLocker();
-
+  const { setResult, resultId } = useSetResult();
   const navigate = useNavigate();
 
   const handleClickNextButton = () => {
@@ -35,7 +37,8 @@ export default function NewLocker() {
     };
     Storage.save('locker', newLocker);
 
-    navigate('/result');
+    setResult();
+    navigate(`/result/${resultId}`);
   };
 
   return (

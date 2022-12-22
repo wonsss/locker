@@ -10,7 +10,7 @@ const NamePage = () => {
 
   return (
     <>
-      <Title linkTo="/home">{`배정 대상`}</Title>
+      <Title linkTo="/">{`배정 대상`}</Title>
       <Radio value={option} onChange={handleChangeRadio}>
         <Radio.Option value="새로 입력">새로 입력</Radio.Option>
         <Radio.Option value="불러오기">불러오기</Radio.Option>
