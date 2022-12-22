@@ -1,9 +1,9 @@
 import { defaultLocker, Locker, lockerState } from 'globalStates/lockerState';
 import { nameState } from 'globalStates/nameState';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-
-import { useLoadPreview } from 'hooks/useLoadPreview';
+import Storage from 'storage';
 
 import useSetResult from 'pages/ResultPage/useSetResult';
 
@@ -20,21 +20,39 @@ import { colors } from 'constants/colors';
 
 export default function OldLocker() {
   const navigate = useNavigate();
+
   const setLockerState = useSetRecoilState<Locker>(lockerState);
 
-  const {
-    list: lockerList,
-    preview: previewLocker,
-    handleClickItemButton,
-    handleDeleteButton,
-  } = useLoadPreview({
-    key: 'locker',
-    defaultData: defaultLocker,
-    setRecoilState: setLockerState,
-  });
+  const lockerListFromStorage = Storage.load('locker');
+  const [lockerList, setLockerList] = useState<Locker[] | undefined>(
+    lockerListFromStorage,
+  );
+
+  const [previewLocker, setPreviewLocker] = useState(
+    lockerList?.length ? lockerList[0] : defaultLocker,
+  );
+
+  useEffect(() => {
+    setLockerState(previewLocker);
+  }, []);
+
+  const handleClickItemButton = (locker: Locker) => {
+    setPreviewLocker(locker);
+  };
+
+  const handleDeleteButton = () => {
+    if (!lockerList) {
+      return;
+    }
+
+    const filteredList = lockerList.filter(({ id }) => id !== previewLocker.id);
+    setLockerList(filteredList);
+    setPreviewLocker(filteredList.length ? filteredList[0] : defaultLocker);
+
+    localStorage.setItem('locker', JSON.stringify(filteredList));
+  };
 
   const locker = useRecoilValue(lockerState);
-
   const name = useRecoilValue(nameState);
 
   const { setResult, resultId } = useSetResult({

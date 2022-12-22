@@ -1,8 +1,8 @@
 import { defaultName, Name, nameState } from 'globalStates/nameState';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useSetRecoilState } from 'recoil';
-
-import { useLoadPreview } from 'hooks/useLoadPreview';
+import Storage from 'storage';
 
 import {
   Banner,
@@ -16,19 +16,38 @@ import {
 import { colors } from 'constants/colors';
 
 const OldName = () => {
-  const setNameState = useSetRecoilState<Name>(nameState);
-  const {
-    list: nameList,
-    preview: previewName,
-    handleClickItemButton,
-    handleDeleteButton,
-  } = useLoadPreview({
-    key: 'name',
-    defaultData: defaultName,
-    setRecoilState: setNameState,
-  });
-
   const navigate = useNavigate();
+
+  const setNameState = useSetRecoilState<Name>(nameState);
+
+  const nameListFromStorage = Storage.load('name');
+  const [nameList, setNameList] = useState<Name[] | undefined>(
+    nameListFromStorage,
+  );
+
+  const [previewName, setPreviewName] = useState(
+    nameList?.length ? nameList[0] : defaultName,
+  );
+
+  useEffect(() => {
+    setNameState(previewName);
+  }, []);
+
+  const handleClickItemButton = (name: Name) => {
+    setPreviewName(name);
+  };
+
+  const handleDeleteButton = () => {
+    if (!nameList) {
+      return;
+    }
+
+    const filteredList = nameList.filter(({ id }) => id !== previewName.id);
+    setNameList(filteredList);
+    setPreviewName(filteredList.length ? filteredList[0] : defaultName);
+
+    localStorage.setItem('name', JSON.stringify(filteredList));
+  };
 
   const handleClickNextButton = () => {
     navigate('/locker');
