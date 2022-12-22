@@ -2,7 +2,14 @@ import useGetResult from './useGetResult';
 import html2canvas from 'html2canvas';
 import { getNowDate } from 'utils/date';
 
-import { Title, Spacing, Lockers, Text, FixedBottomButton } from 'components';
+import {
+  Title,
+  Spacing,
+  Lockers,
+  Text,
+  FixedBottomButton,
+  ProgressBar,
+} from 'components';
 
 import { colors } from 'constants/colors';
 
@@ -24,6 +31,7 @@ const ResultPage = () => {
 
   return (
     <>
+      <ProgressBar now={3} total={3} />
       <Title>{`사물함 배정 결과`}</Title>
       <div
         id="lockerCanvas"

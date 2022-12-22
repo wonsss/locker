@@ -12,3 +12,4 @@ export { default as Text } from './Text';
 export { default as NumberInput } from './NumberInput';
 export { default as Lockers } from './Lockers';
 export { default as SeparatorRadioInput } from './SeparatorRadioInput';
+export { default as ProgressBar } from './ProgressBar';

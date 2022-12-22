@@ -3,13 +3,14 @@ import OldLocker from './OldLocker';
 
 import { useRadioOption } from 'hooks/useRadioOption';
 
-import { Title, Radio, Spacing } from 'components';
+import { Title, Radio, Spacing, ProgressBar } from 'components';
 
 const LockerPage = () => {
   const { option, handleChangeRadio } = useRadioOption('locker');
 
   return (
     <>
+      <ProgressBar now={2} total={3} />
       <Title linkTo="/name">{`사물함 종류`}</Title>
       <Radio value={option} onChange={handleChangeRadio}>
         <Radio.Option value="새로 입력">새로 입력</Radio.Option>
