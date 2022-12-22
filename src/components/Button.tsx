@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { colors } from 'constants/colors';
 
 type ButtonProps = {
+  color?: string;
   size: 'small' | 'medium' | 'large';
   isActive?: boolean;
 };
@@ -15,7 +16,7 @@ const SIZES = {
 };
 
 const Button = styled.button<ButtonProps>`
-  ${({ size, isActive = true }) => css`
+  ${({ color, size, isActive = true }) => css`
     min-height: ${SIZES[size].height};
     min-width: ${SIZES[size].minWidth};
     width: fit-content;
@@ -31,17 +32,17 @@ const Button = styled.button<ButtonProps>`
 
     ${isActive
       ? css`
-          background-color: ${colors.teal300};
+          background-color: ${color ?? colors.grey900};
           color: ${colors.white};
           &:hover {
-            background-color: ${colors.teal400};
+            filter: brightness(0.9);
           }
         `
       : css`
           background-color: ${colors.grey400};
           color: ${colors.white};
           &:hover {
-            background-color: ${colors.teal300};
+            filter: brightness(0.9);
           }
         `}
 

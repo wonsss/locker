@@ -34,21 +34,37 @@ const HomePage = () => {
       <div
         style={{
           display: 'flex',
-          flexWrap: 'wrap',
+          flexDirection: 'column',
+          // flexWrap: 'wrap',
           gap: '10px',
           margin: '0 24px',
         }}
       >
         {resultList?.map((result) => (
-          <Button
+          <div
             key={result.id}
-            onClick={() => handleClickResultButton(result)}
-            size="medium"
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
           >
-            {result.title}
-            <br />
-            {result.createdAt}
-          </Button>
+            <div
+              style={{
+                display: 'flex',
+                gap: '10px',
+              }}
+            >
+              <Text color={colors.grey400}>{result.createdAt}</Text>
+              <Text fontWeight="bold">{result.title}</Text>
+            </div>
+            <Button
+              onClick={() => handleClickResultButton(result)}
+              size="small"
+              color={colors.teal300}
+            >
+              보기
+            </Button>
+          </div>
         ))}
       </div>
       <FixedBottomButton onClick={handleClickStartButton} disabled={false}>
