@@ -1,5 +1,7 @@
 import useNewLocker from './useNewLocker';
+import { nameState } from 'globalStates/nameState';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import Storage from 'storage';
 import { getNowDate } from 'utils/date';
 import { getLockerNameList } from 'utils/locker';
@@ -24,9 +26,14 @@ export default function NewLocker() {
   const { message, locker, handleChangeMatrixInput, handleChangeTitleInput } =
     useNewLocker();
 
+  const name = useRecoilValue(nameState);
+
   const lockerNameList = getLockerNameList(locker);
 
-  const { setResult, resultId } = useSetResult();
+  const { setResult, resultId } = useSetResult({
+    locker,
+    name,
+  });
 
   const handleClickNextButton = () => {
     const lockerId = uuidv4();

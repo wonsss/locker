@@ -1,16 +1,12 @@
-import { lockerState } from 'globalStates/lockerState';
-import { nameState } from 'globalStates/nameState';
+import { Locker } from 'globalStates/lockerState';
+import { Name } from 'globalStates/nameState';
 import shuffle from 'lodash.shuffle';
-import { useRecoilValue } from 'recoil';
 import Storage from 'storage';
 import { getNowDate } from 'utils/date';
 import { getLockerNameList } from 'utils/locker';
 import { v4 as uuidv4 } from 'uuid';
 
-const useSetResult = () => {
-  const locker = useRecoilValue(lockerState);
-  const name = useRecoilValue(nameState);
-
+const useSetResult = ({ locker, name }: { locker: Locker; name: Name }) => {
   const lockerNameList = getLockerNameList(locker);
 
   const filledNameList = name.list.concat(
@@ -20,9 +16,11 @@ const useSetResult = () => {
     ),
   );
   const shuffledNameList = shuffle(filledNameList);
+
   const resultTitle = `${name.title}-${locker.title}`;
 
   const resultId = uuidv4();
+
   const setResult = () => {
     const newResult = {
       id: resultId,

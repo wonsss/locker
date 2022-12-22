@@ -1,6 +1,7 @@
 import { defaultLocker, Locker, lockerState } from 'globalStates/lockerState';
+import { nameState } from 'globalStates/nameState';
 import { useNavigate } from 'react-router';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { useLoadPreview } from 'hooks/useLoadPreview';
 
@@ -32,7 +33,14 @@ export default function OldLocker() {
     setRecoilState: setLockerState,
   });
 
-  const { setResult, resultId } = useSetResult();
+  const locker = useRecoilValue(lockerState);
+
+  const name = useRecoilValue(nameState);
+
+  const { setResult, resultId } = useSetResult({
+    locker,
+    name,
+  });
 
   const handleClickNextButton = () => {
     setResult();
