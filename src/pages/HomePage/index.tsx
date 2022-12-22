@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Storage from 'storage';
 
@@ -12,10 +13,24 @@ const HomePage = () => {
   const handleClickStartButton = () => {
     navigate('/name');
   };
-  const resultList = Storage.load('result') as Result[];
+  const resultListFromStorage = Storage.load('result') as Result[];
+  const [resultList, setResultList] = useState<Result[] | undefined>(
+    resultListFromStorage,
+  );
 
   const handleClickResultButton = (result: Result) => {
     navigate(`/result/${result.id}`);
+  };
+
+  const handleClickDeleteButton = (targetId: string) => {
+    if (!resultList) {
+      return;
+    }
+
+    const filteredList = resultList.filter(({ id }) => id !== targetId);
+    setResultList(filteredList);
+
+    localStorage.setItem('result', JSON.stringify(filteredList));
   };
 
   return (
@@ -57,13 +72,27 @@ const HomePage = () => {
               <Text color={colors.grey400}>{result.createdAt}</Text>
               <Text fontWeight="bold">{result.title}</Text>
             </div>
-            <Button
-              onClick={() => handleClickResultButton(result)}
-              size="small"
-              color={colors.teal300}
+            <div
+              style={{
+                display: 'flex',
+                gap: '10px',
+              }}
             >
-              보기
-            </Button>
+              <Button
+                onClick={() => handleClickResultButton(result)}
+                size="small"
+                color={colors.teal300}
+              >
+                보기
+              </Button>
+              <Button
+                onClick={() => handleClickDeleteButton(result.id)}
+                size="small"
+                color={colors.grey500}
+              >
+                삭제
+              </Button>
+            </div>
           </div>
         ))}
       </div>
