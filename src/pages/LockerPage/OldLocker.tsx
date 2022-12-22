@@ -21,15 +21,22 @@ import { colors } from 'constants/colors';
 export default function OldLocker() {
   const navigate = useNavigate();
 
-  const [currentLocker, setCurrentLocker] = useRecoilState<Locker>(lockerState);
-
   const lockerListFromStorage = Storage.load('locker');
   const [lockerList, setLockerList] = useState<Locker[] | undefined>(
     lockerListFromStorage,
   );
 
+  const [currentLocker, setCurrentLocker] = useRecoilState<Locker>(lockerState);
+  const currentName = useRecoilValue(nameState);
+
+  const { setResult, resultId } = useSetResult({
+    locker: currentLocker,
+    name: currentName,
+  });
+
   useEffect(() => {
-    setCurrentLocker(currentLocker);
+    const initialLocker = lockerList?.length ? lockerList[0] : defaultLocker;
+    setCurrentLocker(initialLocker);
   }, []);
 
   const handleClickItemButton = (locker: Locker) => {
@@ -47,13 +54,6 @@ export default function OldLocker() {
 
     localStorage.setItem('locker', JSON.stringify(filteredList));
   };
-
-  const currentName = useRecoilValue(nameState);
-
-  const { setResult, resultId } = useSetResult({
-    locker: currentLocker,
-    name: currentName,
-  });
 
   const handleClickNextButton = () => {
     setResult();

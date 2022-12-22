@@ -18,15 +18,16 @@ import { colors } from 'constants/colors';
 const OldName = () => {
   const navigate = useNavigate();
 
-  const [currentName, setCurrentName] = useRecoilState<Name>(nameState);
-
   const nameListFromStorage = Storage.load('name');
   const [nameList, setNameList] = useState<Name[] | undefined>(
     nameListFromStorage,
   );
 
+  const [currentName, setCurrentName] = useRecoilState<Name>(nameState);
+
   useEffect(() => {
-    setCurrentName(currentName);
+    const initialName = nameList?.length ? nameList[0] : defaultName;
+    setCurrentName(initialName);
   }, []);
 
   const handleClickItemButton = (name: Name) => {

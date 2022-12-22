@@ -22,6 +22,7 @@ export default function NewName() {
   const navigate = useNavigate();
 
   const [currentName, setCurrentName] = useRecoilState(nameState);
+
   const textarea = useRef<HTMLTextAreaElement>(null);
 
   const handleChangeNameTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
