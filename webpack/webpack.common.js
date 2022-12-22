@@ -38,7 +38,10 @@ module.exports = {
       template: './public/index.html',
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: './public/manifest.json', to: '.' }],
+      patterns: [
+        { from: './public/manifest.json', to: '.' },
+        { from: './public/favicon.ico', to: '.' },
+      ],
     }),
     new ProgressPlugin(true),
   ],

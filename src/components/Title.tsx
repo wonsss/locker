@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { MdArrowBackIosNew } from 'react-icons/md';
+import { MdArrowBackIosNew, MdHomeFilled } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 import styled from '@emotion/styled';
@@ -13,7 +13,7 @@ export default function Title({
   linkTo?: string;
 }>) {
   const navigate = useNavigate();
-  const backToPreviousPage = () => {
+  const movePrevious = () => {
     if (linkTo) {
       navigate(linkTo);
       return;
@@ -22,25 +22,34 @@ export default function Title({
     navigate(-1);
   };
 
+  const moveHome = () => {
+    navigate('/');
+  };
+
   return (
     <Wrapper>
-      {linkTo ? (
-        <MdArrowBackIosNew
-          role="button"
-          size={24}
-          onClick={backToPreviousPage}
-          aria-label="뒤로가기"
-          style={{ cursor: 'pointer' }}
-        />
-      ) : null}
+      <MdArrowBackIosNew
+        role="button"
+        size={24}
+        onClick={movePrevious}
+        aria-label="뒤로가기"
+        style={{ cursor: 'pointer' }}
+      />
       <Text>{children}</Text>
+      <MdHomeFilled
+        role="button"
+        size={24}
+        onClick={moveHome}
+        aria-label="홈으로 이동"
+        style={{ cursor: 'pointer' }}
+      />
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   gap: 5px;
   padding: 0 24px;

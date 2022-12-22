@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { colors } from 'constants/colors';
 
 type ButtonProps = {
+  color?: string;
   size: 'small' | 'medium' | 'large';
   isActive?: boolean;
 };
@@ -15,14 +16,13 @@ const SIZES = {
 };
 
 const Button = styled.button<ButtonProps>`
-  ${({ size, isActive = true }) => css`
-    height: ${SIZES[size].height};
-    max-height: ${SIZES[size].height};
+  ${({ color, size, isActive = true }) => css`
+    min-height: ${SIZES[size].height};
     min-width: ${SIZES[size].minWidth};
     width: fit-content;
     vertical-align: middle;
     text-align: center;
-    padding: 0 1rem;
+    padding: 8px 12px;
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -32,17 +32,17 @@ const Button = styled.button<ButtonProps>`
 
     ${isActive
       ? css`
-          background-color: ${colors.grey900};
+          background-color: ${color ?? colors.grey900};
           color: ${colors.white};
           &:hover {
-            filter: brightness(1.5);
+            filter: brightness(0.9);
           }
         `
       : css`
-          background-color: ${colors.grey300};
+          background-color: ${colors.grey400};
           color: ${colors.white};
           &:hover {
-            filter: brightness(1.5);
+            filter: brightness(0.9);
           }
         `}
 
@@ -51,9 +51,6 @@ const Button = styled.button<ButtonProps>`
     &:disabled {
       background-color: ${colors.grey300};
       cursor: default;
-      &:hover {
-        filter: brightness(1);
-      }
     }
   `}
 `;

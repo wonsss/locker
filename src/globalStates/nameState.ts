@@ -1,9 +1,15 @@
 import { atom } from 'recoil';
 
-export const nameState = atom<{ title: string; list: string[] }>({
+export type Name = {
+  id: string;
+  title: string;
+  list: string[];
+  createdAt: string;
+};
+
+export const defaultName = { id: '', title: '', list: [], createdAt: '' };
+
+export const nameState = atom<Name>({
   key: 'nameType',
-  default: {
-    title: '',
-    list: [],
-  },
+  default: defaultName,
 });

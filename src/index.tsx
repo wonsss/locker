@@ -11,9 +11,9 @@ if (process.env.NODE_ENV === 'development') {
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
-  <StrictMode>
-    <Router>
-      <App />
-    </Router>
-  </StrictMode>,
+  // <StrictMode>
+  <Router>
+    <App />
+  </Router>,
+  // </StrictMode>,
 );

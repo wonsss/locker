@@ -5,16 +5,16 @@ import { colors } from 'constants/colors';
 
 export default function Lockers({
   nameList,
-  lockerList,
+  lockerNameList,
   column,
 }: {
   nameList?: string[];
-  lockerList: string[];
+  lockerNameList?: string[];
   column: number;
 }) {
   return (
     <LockerList column={column}>
-      {lockerList.map((lockerName, index) => {
+      {lockerNameList?.map((lockerName, index) => {
         return (
           <Locker key={index} hasName={Boolean(nameList && nameList[index])}>
             <MemberName>{nameList && nameList[index]}</MemberName>

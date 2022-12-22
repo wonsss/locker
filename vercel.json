@@ -1,0 +1,7 @@
+{
+  "installCommand": "yarn install",
+  "buildCommand": "yarn run build:prod",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+}
