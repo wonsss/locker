@@ -1,4 +1,5 @@
 import { defaultName, Name, nameState } from 'globalStates/nameState';
+import { useNavigate } from 'react-router';
 import { useSetRecoilState } from 'recoil';
 
 import { useLoadPreview } from 'hooks/useLoadPreview';
@@ -21,13 +22,17 @@ const OldName = () => {
     preview: previewName,
     handleClickItemButton,
     handleDeleteButton,
-    handleClickNextButton,
   } = useLoadPreview({
     key: 'name',
     defaultData: defaultName,
-    nextPath: '/locker',
     setRecoilState: setNameState,
   });
+
+  const navigate = useNavigate();
+
+  const handleClickNextButton = () => {
+    navigate('/locker');
+  };
 
   return (
     <>

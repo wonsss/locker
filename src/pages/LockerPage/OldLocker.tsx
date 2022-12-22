@@ -1,7 +1,10 @@
 import { defaultLocker, Locker, lockerState } from 'globalStates/lockerState';
+import { useNavigate } from 'react-router';
 import { useSetRecoilState } from 'recoil';
 
 import { useLoadPreview } from 'hooks/useLoadPreview';
+
+import useSetResult from 'pages/ResultPage/useSetResult';
 
 import {
   Banner,
@@ -15,19 +18,26 @@ import {
 import { colors } from 'constants/colors';
 
 export default function OldLocker() {
+  const navigate = useNavigate();
   const setLockerState = useSetRecoilState<Locker>(lockerState);
+
   const {
     list: lockerList,
     preview: previewLocker,
     handleClickItemButton,
     handleDeleteButton,
-    handleClickNextButton,
   } = useLoadPreview({
     key: 'locker',
     defaultData: defaultLocker,
-    nextPath: '/result',
     setRecoilState: setLockerState,
   });
+
+  const { setResult, resultId } = useSetResult();
+
+  const handleClickNextButton = () => {
+    setResult();
+    navigate(`/result/${resultId}`);
+  };
 
   return (
     <>

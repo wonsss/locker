@@ -44,7 +44,7 @@ const ResultPage = () => {
         <Spacing size={15} />
         <Lockers
           column={Number(result?.column)}
-          lockerList={result?.lockerList}
+          lockerNameList={result?.lockerNameList}
           nameList={result?.nameList}
         />
       </div>
@@ -62,6 +62,6 @@ export type Result = {
   createdAt: string;
   title: string;
   nameList: string[];
-  lockerList: string[];
+  lockerNameList: string[];
   column: number;
 };

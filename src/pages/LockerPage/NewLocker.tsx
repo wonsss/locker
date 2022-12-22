@@ -18,15 +18,17 @@ import {
 import { colors } from 'constants/colors';
 
 export default function NewLocker() {
+  const navigate = useNavigate();
+
   const {
     message,
     locker,
-    lockerList,
+    lockerNameList,
     handleChangeMatrixInput,
     handleChangeTitleInput,
   } = useNewLocker();
+
   const { setResult, resultId } = useSetResult();
-  const navigate = useNavigate();
 
   const handleClickNextButton = () => {
     const lockerId = uuidv4();
@@ -36,7 +38,6 @@ export default function NewLocker() {
       createdAt: getNowDate(),
     };
     Storage.save('locker', newLocker);
-
     setResult();
     navigate(`/result/${resultId}`);
   };
@@ -67,7 +68,7 @@ export default function NewLocker() {
         </Text>
       </div>
       <Border size={20} />
-      <Lockers column={Number(locker.column)} lockerList={lockerList} />
+      <Lockers column={Number(locker.column)} lockerNameList={lockerNameList} />
       <FixedBottomButton
         onClick={handleClickNextButton}
         disabled={!(locker.column && locker.title)}

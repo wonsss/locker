@@ -1,19 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { SetterOrUpdater } from 'recoil';
 import Storage from 'storage';
-
-import useSetResult from 'pages/ResultPage/useSetResult';
 
 export const useLoadPreview = ({
   key,
   defaultData,
-  nextPath,
   setRecoilState,
 }: {
   key: string;
   defaultData: any;
-  nextPath: string;
   setRecoilState: SetterOrUpdater<any>;
 }) => {
   const listFromStorage = Storage.load(key);
@@ -40,23 +35,10 @@ export const useLoadPreview = ({
     localStorage.setItem(key, JSON.stringify(filteredList));
   };
 
-  const navigate = useNavigate();
-  const { setResult, resultId } = useSetResult();
-
-  const handleClickNextButton = () => {
-    if (nextPath === '/result') {
-      setResult();
-      navigate(`${nextPath}/${resultId}`);
-    } else {
-      navigate(nextPath);
-    }
-  };
-
   return {
     list,
     preview,
     handleClickItemButton,
     handleDeleteButton,
-    handleClickNextButton,
   };
 };

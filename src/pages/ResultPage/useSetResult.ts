@@ -12,7 +12,7 @@ const useSetResult = () => {
   const locker = useRecoilValue(lockerState);
   const name = useRecoilValue(nameState);
 
-  const { lockerList } = useNewLocker();
+  const { lockerNameList } = useNewLocker();
 
   const filledNameList = name.list.concat(
     Array.from(
@@ -30,7 +30,7 @@ const useSetResult = () => {
       createdAt: getNowDate(),
       title: resultTitle,
       nameList: shuffledNameList,
-      lockerList: lockerList,
+      lockerNameList: lockerNameList,
       column: Number(locker.column),
     };
     Storage.save('result', newResult);

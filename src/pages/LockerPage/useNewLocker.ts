@@ -24,7 +24,7 @@ const useNewLocker = () => {
     );
   }, [name]);
 
-  const lockerList = useMemo(() => {
+  const lockerNameList = useMemo(() => {
     let rowCount = 0;
     let columnCount = 0;
 
@@ -82,7 +82,7 @@ const useNewLocker = () => {
   return {
     message,
     locker,
-    lockerList,
+    lockerNameList,
     handleChangeMatrixInput,
     handleChangeTitleInput,
   };
