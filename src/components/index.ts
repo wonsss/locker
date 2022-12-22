@@ -11,3 +11,4 @@ export { default as Banner } from './Banner';
 export { default as Text } from './Text';
 export { default as NumberInput } from './NumberInput';
 export { default as Lockers } from './Lockers';
+export { default as SeparatorRadioInput } from './SeparatorRadioInput';

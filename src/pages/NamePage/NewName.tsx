@@ -1,5 +1,5 @@
 import { nameState } from 'globalStates/nameState';
-import { ChangeEvent, useRef } from 'react';
+import { ChangeEvent, Children, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import Storage from 'storage';
@@ -14,6 +14,7 @@ import {
   Banner,
   Text,
   FixedBottomButton,
+  SeparatorRadioInput,
 } from 'components';
 
 import { colors } from 'constants/colors';
@@ -21,12 +22,19 @@ import { colors } from 'constants/colors';
 export default function NewName() {
   const navigate = useNavigate();
 
+  const [separator, setSeparator] = useState(' ');
   const [currentName, setCurrentName] = useRecoilState(nameState);
 
   const textarea = useRef<HTMLTextAreaElement>(null);
 
+  const handleChangeSeparatorRadioInput = (
+    e: ChangeEvent<HTMLInputElement>,
+  ) => {
+    setSeparator(e.target.value);
+  };
+
   const handleChangeNameTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const nameList = e.target.value.split(' ');
+    const nameList = e.target.value.split(separator);
     setCurrentName((prev) => ({ ...prev, list: nameList }));
     if (textarea.current) {
       textarea.current.style.height = 'auto';
@@ -59,10 +67,14 @@ export default function NewName() {
         autoFocus
       />
       <Spacing size={20} />
+      <SeparatorRadioInput
+        value={separator}
+        onChange={handleChangeSeparatorRadioInput}
+      />
       <Textarea
         ref={textarea}
         onChange={handleChangeNameTextarea}
-        value={currentName.list.join(' ')}
+        value={currentName.list.join(separator)}
         rows={2}
         placeholder="이름을 띄어써서 입력해주세요"
       />
