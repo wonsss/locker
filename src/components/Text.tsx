@@ -8,20 +8,23 @@ type TextProps = {
   color?: string;
   fontSize?: string;
   fontWeight?: string;
+  marginLeft?: string;
 };
 
 export default function Text({
   children,
-  color,
-  fontSize,
+  color = colors.grey500,
+  fontSize = '17px',
   fontWeight,
+  marginLeft,
 }: PropsWithChildren<TextProps>) {
   return (
     <Span
       style={{
-        color: color ?? colors.grey500,
-        fontSize: fontSize ?? '17px',
-        fontWeight: fontWeight,
+        color,
+        fontSize,
+        fontWeight,
+        marginLeft,
       }}
     >
       {children}

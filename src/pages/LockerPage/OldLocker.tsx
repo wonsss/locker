@@ -32,6 +32,9 @@ export default function OldLocker() {
   const [previewLocker, setPreviewLocker] = useState<Locker>(initialLocker);
 
   const currentName = useRecoilValue(nameState);
+  const nameInfo = currentName.title
+    ? `${currentName.title} ${currentName.list.length}명을 위한 사물함 고르기`
+    : '뒤로 가서 사물함을 배정할 그룹을 먼저 정해주세요';
 
   const handleClickItemButton = (locker: Locker) => {
     setPreviewLocker(locker);
@@ -59,6 +62,15 @@ export default function OldLocker() {
 
   return (
     <>
+      <Text
+        color={colors.grey700}
+        fontSize="18px"
+        fontWeight="bold"
+        marginLeft="30px"
+      >
+        {nameInfo}
+      </Text>
+      <Spacing size={20} />
       <div
         style={{
           display: 'flex',
