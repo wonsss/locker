@@ -1,11 +1,11 @@
 import { defaultLocker, Locker, lockerState } from 'globalStates/lockerState';
 import { nameState } from 'globalStates/nameState';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Storage from 'storage';
-
-import useSetResult from 'pages/ResultPage/useSetResult';
+import { setShuffledResult } from 'utils/locker';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   Banner,
@@ -27,20 +27,17 @@ export default function OldLocker() {
   );
 
   const [currentLocker, setCurrentLocker] = useRecoilState<Locker>(lockerState);
+
+  const initialLocker = lockerList?.length ? lockerList[0] : defaultLocker;
+  const [previewLocker, setPreviewLocker] = useState<Locker>(initialLocker);
+
   const currentName = useRecoilValue(nameState);
-
-  const { setResult, resultId } = useSetResult({
-    locker: currentLocker,
-    name: currentName,
-  });
-
-  useEffect(() => {
-    const initialLocker = lockerList?.length ? lockerList[0] : defaultLocker;
-    setCurrentLocker(initialLocker);
-  }, []);
+  const nameInfo = currentName.title
+    ? `${currentName.title} ${currentName.list.length}명을 위한 사물함 고르기`
+    : '뒤로 가서 사물함을 배정할 그룹을 먼저 정해주세요';
 
   const handleClickItemButton = (locker: Locker) => {
-    setCurrentLocker(locker);
+    setPreviewLocker(locker);
   };
 
   const handleDeleteButton = () => {
@@ -56,12 +53,24 @@ export default function OldLocker() {
   };
 
   const handleClickNextButton = () => {
-    setResult();
+    const resultId = uuidv4();
+
+    setShuffledResult({ resultId, name: currentName, locker: previewLocker });
+
     navigate(`/result/${resultId}`);
   };
 
   return (
     <>
+      <Text
+        color={colors.grey700}
+        fontSize="18px"
+        fontWeight="bold"
+        marginLeft="30px"
+      >
+        {nameInfo}
+      </Text>
+      <Spacing size={20} />
       <div
         style={{
           display: 'flex',
@@ -75,19 +84,19 @@ export default function OldLocker() {
             key={locker.id}
             onClick={() => handleClickItemButton(locker)}
             size="medium"
-            isActive={currentLocker.id === locker.id}
+            isActive={previewLocker.id === locker.id}
           >
             {locker.title}
           </Button>
         ))}
       </div>
       <Spacing size={20} />
-      {!currentLocker.title ? null : (
+      {!previewLocker.title ? null : (
         <Banner>
           <Spacing size={10} />
           <div style={{ display: 'flex' }}>
             <Text color={colors.grey900} fontSize="27px" fontWeight="bold">
-              {currentLocker.title}
+              {previewLocker.title}
             </Text>
 
             <Button
@@ -100,21 +109,17 @@ export default function OldLocker() {
             </Button>
           </div>
           <Spacing size={10} />
-          <Text>생성시각: {currentLocker.createdAt}</Text>
+          <Text>생성시각: {previewLocker.createdAt}</Text>
           <Spacing size={20} />
           <div style={{ display: 'flex' }}>
-            <NumberInput title="행" defaultValue={currentLocker.row} readOnly />
-            <NumberInput
-              title="열"
-              defaultValue={currentLocker.column}
-              readOnly
-            />
+            <NumberInput title="행" value={previewLocker.row} readOnly />
+            <NumberInput title="열" value={previewLocker.column} readOnly />
           </div>
         </Banner>
       )}
       <FixedBottomButton
         onClick={handleClickNextButton}
-        disabled={!currentLocker.title}
+        disabled={!previewLocker.title}
       >
         랜덤으로 배정하기
       </FixedBottomButton>

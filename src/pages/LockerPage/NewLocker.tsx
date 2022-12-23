@@ -1,15 +1,12 @@
 import { lockerState } from 'globalStates/lockerState';
 import { nameState } from 'globalStates/nameState';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Storage from 'storage';
 import { getNowDate } from 'utils/date';
-import { getLockerNameList } from 'utils/locker';
-import { divisor } from 'utils/math';
+import { getLockerNameList, setShuffledResult } from 'utils/locker';
 import { v4 as uuidv4 } from 'uuid';
-
-import useSetResult from 'pages/ResultPage/useSetResult';
 
 import {
   NumberInput,
@@ -18,6 +15,7 @@ import {
   Text,
   UnderLineInput,
   FixedBottomButton,
+  Spacing,
 } from 'components';
 
 import { colors } from 'constants/colors';
@@ -29,31 +27,11 @@ export default function NewLocker() {
   const [currentLocker, setCurrentLocker] = useRecoilState(lockerState);
   const currentName = useRecoilValue(nameState);
 
-  const { setResult, resultId } = useSetResult({
-    locker: currentLocker,
-    name: currentName,
-  });
+  const nameInfo = currentName.title
+    ? `${currentName.title} ${currentName.list.length}명을 위한 사물함 고르기`
+    : '뒤로 가서 사물함을 배정할 그룹을 먼저 정해주세요';
 
   const lockerNameList = getLockerNameList(currentLocker);
-
-  useEffect(() => {
-    if (!currentName.list.length) {
-      return;
-    }
-
-    const division = divisor(currentName.list.length);
-    const defaultColumn =
-      currentName.list.length === 0
-        ? 4
-        : division[Math.floor(division.length / 2)];
-    const defaultRow =
-      currentName.list.length === 0
-        ? 3
-        : currentName.list.length / defaultColumn;
-    setMessage(
-      `선택하신 ${currentName.title} 그룹은 ${currentName.list.length}명이므로 ${defaultRow}행 ${defaultColumn}열의 사물함을 추천합니다.`,
-    );
-  }, [currentName]);
 
   const handleChangeMatrixInput = (
     e: ChangeEvent<HTMLInputElement>,
@@ -66,11 +44,6 @@ export default function NewLocker() {
     if (value > 26 || value < 0) {
       setMessage('26 이하의 양의 정수를 입력해주세요');
       return;
-    }
-    if (value === '' || value === 0) {
-      setMessage('26 이하의 양의 정수를 입력해주세요');
-    } else {
-      setMessage('');
     }
 
     if (matrix === 'column') {
@@ -100,12 +73,23 @@ export default function NewLocker() {
       createdAt: getNowDate(),
     };
     Storage.save('locker', newLocker);
-    setResult();
+
+    const resultId = uuidv4();
+    setShuffledResult({ resultId, name: currentName, locker: currentLocker });
     navigate(`/result/${resultId}`);
   };
 
   return (
     <>
+      <Text
+        color={colors.grey700}
+        fontSize="18px"
+        fontWeight="bold"
+        marginLeft="30px"
+      >
+        {nameInfo}
+      </Text>
+      <Spacing size={20} />
       <div style={{ display: 'flex', alignItems: 'center', margin: '0 24px' }}>
         <NumberInput
           title="행"
