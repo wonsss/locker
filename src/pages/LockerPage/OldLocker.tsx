@@ -45,11 +45,14 @@ export default function OldLocker() {
       return;
     }
 
-    const filteredList = lockerList.filter(({ id }) => id !== currentLocker.id);
+    const filteredList = lockerList.filter(({ id }) => id !== previewLocker.id);
     setLockerList(filteredList);
-    setCurrentLocker(filteredList.length ? filteredList[0] : defaultLocker);
-
     localStorage.setItem('locker', JSON.stringify(filteredList));
+
+    const restFirstLocker = filteredList.length
+      ? filteredList[0]
+      : defaultLocker;
+    setPreviewLocker(restFirstLocker);
   };
 
   const handleClickNextButton = () => {
