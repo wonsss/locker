@@ -1,5 +1,5 @@
 import { nameState } from 'globalStates/nameState';
-import { ChangeEvent, Children, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import Storage from 'storage';

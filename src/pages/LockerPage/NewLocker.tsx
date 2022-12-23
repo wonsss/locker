@@ -5,11 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Storage from 'storage';
 import { getNowDate } from 'utils/date';
-import { getLockerNameList } from 'utils/locker';
+import { getLockerNameList, setShuffledResult } from 'utils/locker';
 import { divisor } from 'utils/math';
 import { v4 as uuidv4 } from 'uuid';
-
-import useSetResult from 'pages/ResultPage/useSetResult';
 
 import {
   NumberInput,
@@ -28,11 +26,6 @@ export default function NewLocker() {
   const [message, setMessage] = useState('');
   const [currentLocker, setCurrentLocker] = useRecoilState(lockerState);
   const currentName = useRecoilValue(nameState);
-
-  const { setResult, resultId } = useSetResult({
-    locker: currentLocker,
-    name: currentName,
-  });
 
   const lockerNameList = getLockerNameList(currentLocker);
 
@@ -100,7 +93,9 @@ export default function NewLocker() {
       createdAt: getNowDate(),
     };
     Storage.save('locker', newLocker);
-    setResult();
+
+    const resultId = uuidv4();
+    setShuffledResult({ resultId, name: currentName, locker: currentLocker });
     navigate(`/result/${resultId}`);
   };
 

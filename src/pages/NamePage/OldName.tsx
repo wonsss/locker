@@ -1,5 +1,5 @@
 import { defaultName, Name, nameState } from 'globalStates/nameState';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
 import Storage from 'storage';
@@ -25,13 +25,11 @@ const OldName = () => {
 
   const [currentName, setCurrentName] = useRecoilState<Name>(nameState);
 
-  useEffect(() => {
-    const initialName = nameList?.length ? nameList[0] : defaultName;
-    setCurrentName(initialName);
-  }, []);
+  const initialName = nameList?.length ? nameList[0] : defaultName;
+  const [previewName, setPreviewName] = useState<Name>(initialName);
 
   const handleClickItemButton = (name: Name) => {
-    setCurrentName(name);
+    setPreviewName(name);
   };
 
   const handleDeleteButton = () => {
@@ -47,6 +45,7 @@ const OldName = () => {
   };
 
   const handleClickNextButton = () => {
+    setCurrentName(previewName);
     navigate('/locker');
   };
 
@@ -65,23 +64,23 @@ const OldName = () => {
             key={name.id}
             onClick={() => handleClickItemButton(name)}
             size="medium"
-            isActive={currentName.id === name.id}
+            isActive={previewName.id === name.id}
           >
             {name.title}
           </Button>
         ))}
       </div>
       <Spacing size={20} />
-      {!currentName.title ? null : (
+      {!previewName.title ? null : (
         <Banner>
           <Spacing size={10} />
           <div style={{ display: 'flex' }}>
             <Text color={colors.grey900} fontSize="27px" fontWeight="bold">
-              {currentName.title}
+              {previewName.title}
             </Text>
-            {currentName.list.length === 0 ? null : (
+            {previewName.list.length === 0 ? null : (
               <Text color={colors.teal200} fontSize="27px" fontWeight="bold">
-                ({currentName.list.length})
+                ({previewName.list.length})
               </Text>
             )}
             <Button
@@ -94,14 +93,14 @@ const OldName = () => {
             </Button>
           </div>
           <Spacing size={10} />
-          <Text>생성시각: {currentName.createdAt}</Text>
+          <Text>생성시각: {previewName.createdAt}</Text>
           <Spacing size={10} />
-          <Chips list={currentName.list} />
+          <Chips list={previewName.list} />
         </Banner>
       )}
       <FixedBottomButton
         onClick={handleClickNextButton}
-        disabled={!currentName.title}
+        disabled={!previewName.title}
       >
         다음
       </FixedBottomButton>
