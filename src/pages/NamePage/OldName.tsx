@@ -37,11 +37,12 @@ const OldName = () => {
       return;
     }
 
-    const filteredList = nameList.filter(({ id }) => id !== currentName.id);
+    const filteredList = nameList.filter(({ id }) => id !== previewName.id);
     setNameList(filteredList);
-    setCurrentName(filteredList.length ? filteredList[0] : defaultName);
-
     localStorage.setItem('name', JSON.stringify(filteredList));
+
+    const restFirstName = filteredList.length ? filteredList[0] : defaultName;
+    setPreviewName(restFirstName);
   };
 
   const handleClickNextButton = () => {
